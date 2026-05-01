@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ventas - MiniMarket</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 
 <body>
     <header class="header">
         <h1>MiniMarket - Ventas</h1>
         <nav>
-            <a href="main.html" class="active">Ventas</a>
-            <a href="gestion.html">Gestión</a>
-            <a href="publicidad.html">Publicidad</a>
-            <a href="contacto.html">Contacto</a>
-            <a href="../index.html" class="logout">Salir</a>
+            <a href="${pageContext.request.contextPath}/ventas" class="active">Ventas</a>
+            <a href="${pageContext.request.contextPath}/gestion">Gestión</a>
+            <a href="${pageContext.request.contextPath}/publicidad">Publicidad</a>
+            <a href="${pageContext.request.contextPath}/contacto">Contacto</a>
+            <a href="${pageContext.request.contextPath}/" class="logout">Salir</a>
         </nav>
     </header>
     <main>
@@ -52,7 +52,7 @@
                 <p><strong>Total: S/2.50</strong></p>
                 <button class="btn-primary">Pagar</button>
             </div>
-        </div>\
+        </div>
     </main>
 </body>
 </html>

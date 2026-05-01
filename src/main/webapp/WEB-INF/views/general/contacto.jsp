@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacto - MiniMarket</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 
 <body>
     <header class="header">
         <h1>MiniMarket - Contacto</h1>
         <nav>
-            <a href="main.html">Ventas</a>
-            <a href="gestion.html">Gestión</a>
-            <a href="publicidad.html">Publicidad</a>
-            <a href="contacto.html" class="active">Contacto</a>
-            <a href="../index.html" class="logout">Salir</a>
+            <a href="${pageContext.request.contextPath}/ventas">Ventas</a>
+            <a href="${pageContext.request.contextPath}/gestion">Gestión</a>
+            <a href="${pageContext.request.contextPath}/publicidad">Publicidad</a>
+            <a href="${pageContext.request.contextPath}/contacto" class="active">Contacto</a>
+            <a href="${pageContext.request.contextPath}/" class="logout">Salir</a>
         </nav>
     </header>
     <main>
