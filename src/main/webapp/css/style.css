@@ -1,0 +1,328 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+}
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #667eea;
+}
+
+.login-box {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+}
+
+.login-box h1 {
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.login-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.login-box input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.login-box button {
+    padding: 10px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-box button a {
+    color: white;
+    text-decoration: none;
+}
+
+.header {
+    background: #667eea;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 1.3rem;
+}
+
+.header nav {
+    display: flex;
+    gap: 15px;
+}
+
+.header nav a {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+.header nav a.active {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.header nav a.logout {
+    color: #ffcccc;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.container.sales {
+    display: grid;
+    grid-template-columns: 1fr 250px;
+    gap: 20px;
+}
+
+.products-col {
+    grid-column: 1;
+}
+
+.container.sales .sidebar {
+    grid-column: 2;
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+h2, h3 {
+    color: #667eea;
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+h3 {
+    margin: 15px 0 10px 0;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.card {
+    background: white;
+    padding: 12px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.card h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.card p {
+    color: #667eea;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 8px 0;
+}
+
+.card button {
+    width: 100%;
+    padding: 8px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.sidebar {
+    background: white;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+.sidebar h3 {
+    margin-bottom: 10px;
+}
+
+.sidebar p {
+    margin: 8px 0;
+}
+
+.sidebar hr {
+    margin: 10px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 10px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.form-section {
+    background: white;
+    padding: 15px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.form-section input,
+.form-section button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.form-section button {
+    background: #667eea;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    background: white;
+    border-collapse: collapse;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+table th {
+    background: #667eea;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+table td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+table button {
+    padding: 5px 10px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.banner {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.banner h2 {
+    margin-bottom: 15px;
+}
+
+.contact-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.info,
+.form {
+    background: white;
+    padding: 15px;
+    border-radius: 4px;
+}
+
+
+.info p {
+    margin: 10px 0;
+}
+
+.form form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form input,
+.form textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.form button {
+    padding: 10px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .header nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .contact-section {
+        grid-template-columns: 1fr;
+    }
+
+    .container.sales {
+        grid-template-columns: 1fr;
+    }
+
+    .container.sales .sidebar {
+        position: static;
+        grid-column: auto;
+    }
+}
+
