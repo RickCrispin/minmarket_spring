@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,16 +9,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-    <header class="header">
-        <h1>MiniMarket - Publicidad</h1>
-        <nav>
-            <a href="${pageContext.request.contextPath}/ventas">Ventas</a>
-            <a href="${pageContext.request.contextPath}/gestion">Gestión</a>
-            <a href="${pageContext.request.contextPath}/publicidad" class="active">Publicidad</a>
-            <a href="${pageContext.request.contextPath}/contacto">Contacto</a>
-            <a href="${pageContext.request.contextPath}/" class="logout">Salir</a>
-        </nav>
-    </header>
+    <c:set var="activePage" value="publicidad" />
+    <c:set var="headerTitle" value="Publicidad" />
+    <jsp:include page="/WEB-INF/views/components/navbara.jsp" />
 
     <main>
         <div class="container">
