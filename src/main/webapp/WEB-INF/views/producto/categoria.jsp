@@ -7,6 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión - MiniMarket</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <style>
+        .toggle-input{ display:none; }
+        .toggle-label{ display:inline-block; cursor:pointer; padding:8px 12px; background:#2b6cb0; color:#fff; border-radius:4px; margin-bottom:8px; }
+        .toggle-label.close{ background:#a0aec0; }
+        .form-container{ display:none; margin-top:10px; }
+        .toggle-input:checked + .toggle-label.open + .toggle-label.close + .form-container{ display:block; }
+        .toggle-input:checked + .toggle-label.open{ display:none; }
+        .toggle-input:checked + .toggle-label.open + .toggle-label.close{ display:inline-block; }
+    </style>
 </head>
 
 <body>
@@ -16,17 +25,22 @@
     <main>
         <div class="container">
             <h2>Gestión de Categorías</h2>
-            <!-- Formulario para agregar nueva categoría -->
-            <form class="form-section" action="${pageContext.request.contextPath}/categoria" method="post">
-                <input type="text" name="nombre" placeholder="Nombre categoría..." required>
-                <input type="text" name="descripcion" placeholder="Descripción...">
-                <select name="estado" required>
-                    <option value="">Seleccionar estado...</option>
-                    <option value="Activo">Activo</option>
-                    <option value="Inactivo">Inactivo</option>
-                </select>
-                <button type="submit">Agregar</button>
-            </form>
+            <!-- Control CSS-only para mostrar/ocultar formulario de nueva categoría -->
+            <input type="checkbox" id="toggleCategoria" class="toggle-input" />
+            <label for="toggleCategoria" class="toggle-label open">Añadir nueva categoría</label>
+            <label for="toggleCategoria" class="toggle-label close" style="display:none;">Cerrar</label>
+            <div class="form-container">
+                <form class="form-section" action="${pageContext.request.contextPath}/categoria" method="post">
+                    <input type="text" name="nombre" placeholder="Nombre categoría..." required>
+                    <input type="text" name="descripcion" placeholder="Descripción...">
+                    <select name="estado" required>
+                        <option value="">Seleccionar estado...</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                    <button type="submit">Agregar</button>
+                </form>
+            </div>
 
             <h3>Categorías</h3>
             <!-- Tabla de categorías -->
