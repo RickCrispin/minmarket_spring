@@ -25,7 +25,8 @@
                 <button type="submit">Entrar</button>
             </form>
             <c:if test="${not empty error}">
-                <p class="error">${error}</p>
+                <br>
+                <p style="color: red;" class="error">${error}.</p>
             </c:if>
         </div>
     </main>

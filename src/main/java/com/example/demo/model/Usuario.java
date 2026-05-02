@@ -10,6 +10,7 @@ public class Usuario {
     private String password;
     private String telefono;
     private String direccion;
+    private String estado;
     private LocalDateTime fecha;
 
     
@@ -23,6 +24,7 @@ public class Usuario {
         String password,
         String telefono,
         String direccion,
+        String estado,
         LocalDateTime fecha){
         this.id = id;
         this.nombres = nombres;
@@ -32,6 +34,7 @@ public class Usuario {
         this.telefono = telefono;
         this.direccion = direccion;
         this.fecha = fecha;
+        this.estado = estado;
     }
     
         public Integer getId() {
@@ -96,5 +99,13 @@ public class Usuario {
     
         public void setFecha(LocalDateTime fecha) {
             this.fecha = fecha;
+        }
+    
+        public String getEstado() {
+            return this.estado;
+        }
+    
+        public void setEstado(String estado) {
+            this.estado = estado;
         }
 }
