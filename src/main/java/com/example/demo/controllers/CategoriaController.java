@@ -22,7 +22,7 @@ public class CategoriaController {
     public String categoria(Model model){
         model.addAttribute("categorias", categoriaService.getAllCategorias());
         model.addAttribute("categoria", new Categoria());
-        return "producto/categoria";
+        return "components/categoria/categoria";
     }
 
     @PostMapping("/categoria")
@@ -35,7 +35,7 @@ public class CategoriaController {
     public String editCategoria(@PathVariable int id, Model model){
         Categoria categoria = categoriaService.getCategoriaById(id);
         model.addAttribute("categoria", categoria);
-        return "producto/formCategoria";
+        return "components/categoria/formCategoria";
     }
 
     @PostMapping("/categoria/edit/{id}")
