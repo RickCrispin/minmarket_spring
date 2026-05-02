@@ -19,13 +19,19 @@ public class UsuarioRepository implements UsuarioDAO{
     private final RowMapper<Usuario> rowMapper = (rs, rowNum) -> {
         Usuario usuario = new Usuario();
         usuario.setId(rs.getInt("id"));
-        usuario.setNombres(rs.getString("correo"));
+        usuario.setNombres(rs.getString("nombres"));
+        usuario.setApellidos(rs.getString("apellidos"));
+        usuario.setCorreo(rs.getString("correo"));
         usuario.setPassword(rs.getString("password"));
+        usuario.setTelefono(rs.getString("telefono"));
+        usuario.setDireccion(rs.getString("direccion"));
+        usuario.setEstado(rs.getString("estado"));
+        usuario.setFecha(rs.getTimestamp("fecha_registro").toLocalDateTime());
         return usuario;
     };
 
     public Usuario authUsuario(String user, String password) {
-        String sql = "SELECT * FROM usuarios WHERE correo = ? AND password = ?";
+        String sql = "SELECT * FROM usuarios WHERE correo = ? AND password = ? AND estado = 'Activo'";
         List<Usuario> usuarios = jdbcTemplate.query(sql, rowMapper, user, password);
         return usuarios.isEmpty() ? null : usuarios.get(0);
     }
