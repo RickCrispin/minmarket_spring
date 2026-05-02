@@ -35,4 +35,29 @@ public class UsuarioRepository implements UsuarioDAO{
         List<Usuario> usuarios = jdbcTemplate.query(sql, rowMapper, user, password);
         return usuarios.isEmpty() ? null : usuarios.get(0);
     }
+
+    public List<Usuario> getAllUsuarios() {
+        String sql = "SELECT * FROM usuarios ORDER BY id DESC";
+        return jdbcTemplate.query(sql, rowMapper);
+    }
+
+    public Usuario getUsuarioById(int id) {
+        String sql = "SELECT * FROM usuarios WHERE id = ?";
+        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+    }
+
+    public void addUsuario(Usuario usuario) {
+        String sql = "INSERT INTO usuarios (nombres, apellidos, correo, password, telefono, direccion, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, usuario.getNombres(), usuario.getApellidos(), usuario.getCorreo(), usuario.getPassword(), usuario.getTelefono(), usuario.getDireccion(), usuario.getEstado());
+    }
+
+    public void updateUsuario(Usuario usuario) {
+        String sql = "UPDATE usuarios SET nombres = ?, apellidos = ?, correo = ?, password = ?, telefono = ?, direccion = ?, estado = ? WHERE id = ?";
+        jdbcTemplate.update(sql, usuario.getNombres(), usuario.getApellidos(), usuario.getCorreo(), usuario.getPassword(), usuario.getTelefono(), usuario.getDireccion(), usuario.getEstado(), usuario.getId());
+    }
+
+    public void desactivarUsuario(int id) {
+        String sql = "UPDATE usuarios SET estado = 'Inactivo' WHERE id = ?";
+        jdbcTemplate.update(sql, id);
+    }
 }

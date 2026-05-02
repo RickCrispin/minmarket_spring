@@ -25,6 +25,7 @@
                 <div class="hero-actions">
                     <a class="btn-primary" href="${pageContext.request.contextPath}/ventas">Ir a ventas</a>
                     <a class="secondary-link" href="${pageContext.request.contextPath}/gestion">Gestionar inventario</a>
+                    <a class="secondary-link" href="${pageContext.request.contextPath}/usuario">Usuarios</a>
                 </div>
             </div>
             <aside class="hero-card">
@@ -57,7 +58,7 @@
             <article class="feature-card">
                 <h3>Catálogo</h3>
                 <p>Revisa y organiza la información del inventario sin salir del panel.</p>
-                <a href="${pageContext.request.contextPath}/gestion">Abrir gestión</a>
+                <a href="${pageContext.request.contextPath}/usuario">Abrir gestión</a>
             </article>
             <article class="feature-card">
                 <h3>Promociones</h3>

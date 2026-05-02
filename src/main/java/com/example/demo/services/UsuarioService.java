@@ -1,15 +1,14 @@
-package com.example.demo.repositories;
+package com.example.demo.services;
 
 import java.util.List;
 
 import com.example.demo.model.Usuario;
 
-public interface UsuarioDAO {
-    Usuario authUsuario(String user, String password);
-
+public interface UsuarioService {
     List<Usuario> getAllUsuarios();
     Usuario getUsuarioById(int id);
     void addUsuario(Usuario usuario);
     void updateUsuario(Usuario usuario);
     void desactivarUsuario(int id);
+    Usuario authUsuario(String user, String password);
 }

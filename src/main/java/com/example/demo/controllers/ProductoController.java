@@ -23,10 +23,10 @@ public class ProductoController {
 
     @GetMapping("/producto")
     public String producto(Model model) {
-        model.addAttribute("productos", productoService.getAllProductosAdmin());
+        model.addAttribute("productos", productoService.getAllProductos());
         model.addAttribute("categorias", categoriaService.getAllCategorias());
         model.addAttribute("producto", new Producto());
-        return "producto/gestion";
+        return "producto/productos";
     }
 
     @PostMapping("/producto")

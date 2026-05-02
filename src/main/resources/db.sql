@@ -117,18 +117,32 @@ VALUES
     ('Admin', 'Central', 'admin@minimarket.com', 'admin123', '+51 900 000 001', 'Av. Principal 100', 'Activo'),
     ('María', 'Gonzales', 'maria@minimarket.com', 'maria123', '+51 900 000 002', 'Jr. Comercio 55', 'Activo');
 
+-- CATEGORÍAS
 INSERT INTO categorias (nombre_categoria, descripcion, estado)
 VALUES
-    ('Bebidas', 'Refrescos, jugos y bebidas calientes', 'Activo'),
-    ('Lácteos', 'Leche, yogurt y quesos', 'Activo'),
-    ('Abarrotes', 'Productos no perecibles y básicos', 'Activo');
+    ('Bebidas', 'Refrescos, jugos y bebidas', 'Activo'),
+    ('Lácteos', 'Leche, yogurt y derivados', 'Activo'),
+    ('Abarrotes', 'Productos básicos no perecibles', 'Activo'),
+    ('Snacks', 'Aperitivos y dulces', 'Activo'),
+    ('Panadería', 'Productos horneados', 'Activo');
 
+-- PRODUCTOS 
 INSERT INTO productos (nombre_producto, descripcion, precio, stock, id_categoria, estado)
 VALUES
-    ('Leche Entera 1L', 'Leche fresca pasteurizada', 5.50, 50, 2, 'Activo'),
-    ('Pan Integral', 'Pan artesanal integral', 3.20, 30, 3, 'Activo'),
-    ('Café Molido 250g', 'Café tostado molido', 12.00, 20, 1, 'Activo');
+    ('Agua Mineral 500ml', 'Botella individual sin gas', 2.50, 60, 1, 'Activo'),
+    ('Gaseosa Cola 355ml', 'Lata individual', 3.00, 48, 1, 'Activo'),
+    ('Jugo en Caja 1L', 'Bebida lista para consumo', 4.50, 30, 1, 'Activo'),
 
+    ('Leche UHT 1L', 'Leche larga vida', 5.60, 35, 2, 'Activo'),
+    ('Yogurt Bebible 250ml', 'Presentación individual', 2.80, 40, 2, 'Activo'),
+
+    ('Fideos Spaghetti 500g', 'Paquete cerrado', 3.00, 45, 3, 'Activo'),
+    ('Arroz Extra 1Kg', 'Bolsa sellada', 4.20, 50, 3, 'Activo'),
+
+    ('Chocolate Barra 100g', 'Unidad individual', 3.50, 55, 4, 'Activo'),
+    ('Papas Fritas Bolsa 100g', 'Snack en bolsa', 4.00, 38, 4, 'Activo'),
+
+    ('Pan de Molde', 'Pan en paquete sellado', 6.50, 25, 5, 'Activo');
 INSERT INTO ventas (id_usuario, fecha_venta, total, estado)
 VALUES
     (1, NOW(), 21.20, 'Concretado'),

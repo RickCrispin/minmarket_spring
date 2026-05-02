@@ -27,9 +27,7 @@ public class HelloController {
 
     @GetMapping("/gestion")
     public String gestion(Model model) {
-        model.addAttribute("productos", productoService.getAllProductosAdmin());
-        model.addAttribute("categorias", categoriaService.getAllCategorias());
-        return "producto/gestion";
+        return "redirect:/usuario";
     }
 
     @GetMapping("/publicidad")
