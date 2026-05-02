@@ -107,3 +107,12 @@ http://localhost:8085
 - Si MySQL usa otro puerto, actualiza `spring.datasource.url`.
 - Si la base de datos no existe, crea `minimarket_ventas` y ejecuta `db.sql`.
 - Si el servidor Tomcat embebido no arranca, revisa los logs en la consola para mensajes de error.
+
+
+
+## FUTURAS IMPLEMENTACIONES:
+
+Stock ingresando los datos en la tabla detalle de venta y restando stock de la tabla venta, y cancelar o al ocurrir un error se eliminen las columnas de detalle de venta de la venta y se elimine la columna de ventas haciendo que esos nunca hubieran existido, asi mismo se devuelve el valor de stock a cada producto, y en la base de datos mysql asegurar que cuando en el sistema ocurra un error, una transaction devuelva a la normalidad como si no hubiera ocurrido el proceso y devolviendo todo a su lugar. 
+
+
+Asi mismo cuando se quiera recuperar en el mismo sistema un proveso de venta almacenado en la tabla de ventas y se mire claramente que quedo pendiente, se pueda buscar para continuar, cancelarla o confirmarla.
