@@ -18,26 +18,21 @@
             <div class="products-col">
                 <h2>Productos</h2>
                 <div class="grid">
-                    <div class="card">
-                        <h3>Leche</h3>
-                        <p>S/2.50</p>
-                        <button>Agregar</button>
-                    </div>
-                    <div class="card">
-                        <h3>Pan</h3>
-                        <p>S/1.50</p>
-                        <button>Agregar</button>
-                    </div>
-                    <div class="card">
-                        <h3>Arroz</h3>
-                        <p>S/2.00</p>
-                        <button>Agregar</button>
-                    </div>
-                    <div class="card">
-                        <h3>Café</h3>
-                        <p>S/4.50</p>
-                        <button>Agregar</button>
-                    </div>
+                    <c:choose>
+                        <c:when test="${not empty productos}">
+                            <c:forEach var="producto" items="${productos}">
+                                <div class="card">
+                                    <h3>${producto.nombre}</h3>
+                                    <p>S/${producto.precio}</p>
+                                    <p style="font-size: 0.9em; color: #666;">Stock: ${producto.stock}</p>
+                                    <button data-producto-id="${producto.id}">Agregar</button>
+                                </div>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <p>No hay productos activos para mostrar.</p>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
             <div class="sidebar">

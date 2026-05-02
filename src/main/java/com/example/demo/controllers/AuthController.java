@@ -27,7 +27,7 @@ public class AuthController {
         var usuario = authService.authUsuario(username, password);
         if (usuario != null) {
             session.setAttribute("userLogged", usuario);
-            return "redirect:/ventas";
+            return "redirect:/principal";
         } else {
             model.addAttribute("error", "Credenciales inválidas");
             return "login";

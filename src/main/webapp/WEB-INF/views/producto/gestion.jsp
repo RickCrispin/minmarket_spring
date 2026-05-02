@@ -16,27 +16,55 @@
     <main>
         <div class="container">
             <h2>Gestión de Inventario</h2>
-            <form class="form-section">
-                <input type="text" placeholder="Nombre producto" required>
-                <input type="number" placeholder="Precio" step="0.01" required>
-                <input type="number" placeholder="Stock" required>
+            <form class="form-section" action="${pageContext.request.contextPath}/producto" method="post">
+                <input type="text" name="nombre" placeholder="Nombre producto" required>
+                <input type="text" name="descripcion" placeholder="Descripción">
+                <input type="number" name="precio" placeholder="Precio" step="0.01" required>
+                <input type="number" name="stock" placeholder="Stock" required>
+                <select name="idCategoria" required>
+                    <option value="">Seleccionar categoría...</option>
+                    <c:forEach var="categoria" items="${categorias}">
+                        <option value="${categoria.id}">${categoria.nombre}</option>
+                    </c:forEach>
+                </select>
                 <button type="submit">Agregar</button>
             </form>
 
             <h3>Inventario</h3>
             <table>
                 <tr>
+                    <th>ID</th>
                     <th>Producto</th>
+                    <th>Descripción</th>
                     <th>Precio</th>
                     <th>Stock</th>
-                    <th>Acción</th>
+                    <th>Categoría</th>
+                    <th>Acciones</th>
                 </tr>
-                <tr>
-                    <td>Leche</td>
-                    <td>S/2.50</td>
-                    <td>45</td>
-                    <td><button>Editar</button></td>
-                </tr>
+                <c:choose>
+                    <c:when test="${not empty productos}">
+                        <c:forEach var="producto" items="${productos}">
+                            <tr>
+                                <td>${producto.id}</td>
+                                <td>${producto.nombre}</td>
+                                <td>${producto.descripcion}</td>
+                                <td>S/${producto.precio}</td>
+                                <td>${producto.stock}</td>
+                                <td>${producto.categoria.nombre}</td>
+                                <td>
+                                    <form action="${pageContext.request.contextPath}/producto/edit/${producto.id}" method="get" style="display:inline;">
+                                        <button type="submit" style="color: rgb(255, 255, 255);">Editar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="7">No hay productos para mostrar.</td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
             </table>
         </div>
     </main>
