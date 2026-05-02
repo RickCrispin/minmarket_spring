@@ -6,7 +6,7 @@ public class DetalleVenta {
     private Integer idProducto;
     private Integer cantidad;
     private Double precioUnitario;
-    private Integer subTotal;
+    private Double subTotal;
 
     private Producto producto;
 
@@ -14,7 +14,7 @@ public class DetalleVenta {
 
     }
 
-    public DetalleVenta(Integer id, Integer idVenta, Integer idProducto, Integer cantidad, Double precioUnitario, Integer subTotal){
+    public DetalleVenta(Integer id, Integer idVenta, Integer idProducto, Integer cantidad, Double precioUnitario, Double subTotal){
         this.id = id;
         this.idVenta = idVenta;
         this.idProducto = idProducto;
@@ -23,7 +23,7 @@ public class DetalleVenta {
         this.subTotal = subTotal;
     }
 
-    public DetalleVenta(Integer id, Integer idVenta, Integer idProducto, Integer cantidad, Double precioUnitario, Integer subTotal, Producto producto){
+    public DetalleVenta(Integer id, Integer idVenta, Integer idProducto, Integer cantidad, Double precioUnitario, Double subTotal, Producto producto){
         this.id = id;
         this.idVenta = idVenta;
         this.idProducto = idProducto;
@@ -77,11 +77,11 @@ public class DetalleVenta {
         return this.producto;
     }
 
-    public Integer getSubTotal() {
+    public Double getSubTotal() {
         return this.subTotal;
     }
     
-    public void setSubTotal(Integer subTotal) {
+    public void setSubTotal(Double subTotal) {
         this.subTotal = subTotal;
     }
 }

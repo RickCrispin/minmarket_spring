@@ -1,32 +1,13 @@
 package com.example.demo;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import com.example.demo.services.CategoriaService;
-import com.example.demo.services.ProductoService;
 
 @Controller
 public class AppController {
-    private final ProductoService productoService;
-    private final CategoriaService categoriaService;
-
-    public AppController(ProductoService productoService, CategoriaService categoriaService) {
-        this.productoService = productoService;
-        this.categoriaService = categoriaService;
-    }
-
-    @GetMapping("/ventas")
-    public String ventas(Model model) {
-        model.addAttribute("productos", productoService.getAllProductos());
-        model.addAttribute("carrito", java.util.List.of());
-        model.addAttribute("totalCarrito", 0.0);
-        return "venta/ventas";
-    }
 
     @GetMapping("/gestion")
-    public String gestion(Model model) {
+    public String gestion() {
         return "redirect:/usuario";
     }
 

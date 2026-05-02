@@ -18,6 +18,8 @@
         .estado-badge{ display:inline-block; padding:4px 10px; border-radius:999px; font-size:0.85rem; font-weight:600; color:#fff; }
         .estado-activo{ background:#2f855a; }
         .estado-inactivo{ background:#c53030; }
+        .fila-inactiva{ background:#fff5f5; }
+        .fila-inactiva td{ color:#9b2c2c; }
     </style>
 </head>
 
@@ -63,7 +65,7 @@
                 <c:choose>
                     <c:when test="${not empty productos}">
                         <c:forEach var="producto" items="${productos}">
-                            <tr>
+                            <tr class="${producto.estado == 'Inactivo' ? 'fila-inactiva' : ''}">
                                 <td>${producto.id}</td>
                                 <td>${producto.nombre}</td>
                                 <td>${producto.descripcion}</td>

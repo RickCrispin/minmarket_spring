@@ -7,6 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ventas - MiniMarket</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <style>
+        .sale-status{ margin: 0 0 16px; padding: 12px 14px; border-radius: 8px; background: #eef2ff; }
+        .sale-badge{ display:inline-block; padding:4px 10px; border-radius:999px; color:#fff; font-weight:600; font-size:0.85rem; }
+        .sale-pending{ background:#d69e2e; }
+        .sale-concreted{ background:#2f855a; }
+        .alert-error{ margin: 12px 0; padding: 10px 12px; border-radius: 8px; background: #fff5f5; color: #9b2c2c; border: 1px solid #feb2b2; }
+        .empty-state{ padding: 14px; border: 1px dashed #cbd5e1; border-radius: 8px; background: #fff; }
+        .sale-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+        .sale-actions form{ display:inline; }
+        .detail-list{ margin-top:12px; padding-left: 18px; }
+        .product-form{ margin-top: 12px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+        .product-form input[type="number"]{ width: 90px; }
+        .product-meta{ font-size: 0.9em; color: #666; }
+    </style>
 </head>
 
 <body>
@@ -17,6 +31,9 @@
         <div class="container sales">
             <div class="products-col">
                 <h2>Productos</h2>
+                <c:if test="${not empty stockError}">
+                    <div class="alert-error">${stockError}</div>
+                </c:if>
                 <div class="grid">
                     <c:choose>
                         <c:when test="${not empty productos}">
@@ -24,8 +41,20 @@
                                 <div class="card">
                                     <h3>${producto.nombre}</h3>
                                     <p>S/${producto.precio}</p>
-                                    <p style="font-size: 0.9em; color: #666;">Stock: ${producto.stock}</p>
-                                    <button data-producto-id="${producto.id}">Agregar</button>
+                                    <p class="product-meta">Stock: ${producto.stock}</p>
+                                    <p class="product-meta">Categoría: ${producto.categoria.nombre}</p>
+                                    <c:choose>
+                                        <c:when test="${not empty ventaActiva}">
+                                            <form class="product-form" action="${pageContext.request.contextPath}/ventas/detalle" method="post">
+                                                <input type="hidden" name="idProducto" value="${producto.id}">
+                                                <input type="number" name="cantidad" min="1" max="${producto.stock}" value="1" required>
+                                                <button type="submit">Agregar</button>
+                                            </form>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <button type="button" disabled>Inicia una venta para agregar</button>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </c:forEach>
                         </c:when>
@@ -36,11 +65,49 @@
                 </div>
             </div>
             <div class="sidebar">
-                <h3>Carrito</h3>
-                <p>Leche - S/2.50</p>
-                <hr>
-                <p><strong>Total: S/2.50</strong></p>
-                <button class="btn-primary">Pagar</button>
+                <h3>Venta</h3>
+                <c:choose>
+                    <c:when test="${not empty ventaActiva}">
+                        <div class="sale-status">
+                            <div><strong>Venta #${ventaActiva.id}</strong></div>
+                            <div>Estado: <span class="sale-badge ${ventaActiva.estado == 'Concretado' ? 'sale-concreted' : 'sale-pending'}">${ventaActiva.estado}</span></div>
+                            <div>Fecha: ${ventaActiva.fechaVenta}</div>
+                        </div>
+
+                        <h4>Detalles</h4>
+                        <c:choose>
+                            <c:when test="${not empty detallesVenta}">
+                                <ul class="detail-list">
+                                    <c:forEach var="detalle" items="${detallesVenta}">
+                                        <li>${detalle.producto.nombre} x ${detalle.cantidad} - S/${detalle.subTotal}</li>
+                                    </c:forEach>
+                                </ul>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="empty-state">Todavía no hay detalles registrados.</div>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <hr>
+                        <p><strong>Total: S/${totalVenta}</strong></p>
+                        <div class="sale-actions">
+                            <form action="${pageContext.request.contextPath}/ventas/calcular" method="post">
+                                <button type="submit">Calcular total</button>
+                            </form>
+                            <form action="${pageContext.request.contextPath}/ventas/confirmar" method="post">
+                                <button type="submit" class="btn-primary">Confirmar venta</button>
+                            </form>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="empty-state">
+                            <p>No hay una venta activa.</p>
+                            <form action="${pageContext.request.contextPath}/ventas/iniciar" method="post">
+                                <button type="submit" class="btn-primary">Iniciar venta</button>
+                            </form>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </main>
