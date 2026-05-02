@@ -91,9 +91,6 @@
                         <hr>
                         <p><strong>Total: S/${totalVenta}</strong></p>
                         <div class="sale-actions">
-                            <form action="${pageContext.request.contextPath}/ventas/calcular" method="post">
-                                <button type="submit">Calcular total</button>
-                            </form>
                             <form action="${pageContext.request.contextPath}/ventas/confirmar" method="post">
                                 <button type="submit" class="btn-primary">Confirmar venta</button>
                             </form>

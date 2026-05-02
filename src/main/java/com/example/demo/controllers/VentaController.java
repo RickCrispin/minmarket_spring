@@ -41,7 +41,12 @@ public class VentaController {
 
         model.addAttribute("ventaActiva", ventaActiva);
         model.addAttribute("detallesVenta", ventaActiva != null ? ventaActiva.getDetalles() : java.util.List.of());
-        model.addAttribute("totalVenta", ventaActiva != null && ventaActiva.getTotal() != null ? ventaActiva.getTotal() : 0.0);
+        // Calcular total automáticamente
+        Double totalVenta = 0.0;
+        if (ventaActiva != null && ventaActivaId != null) {
+            totalVenta = ventaService.calcularTotal(ventaActivaId);
+        }
+        model.addAttribute("totalVenta", totalVenta);
         model.addAttribute("ventaActivaId", ventaActivaId);
         return "venta/ventas";
     }
@@ -70,20 +75,11 @@ public class VentaController {
 
         try {
             ventaService.agregarDetalle(ventaActivaId, idProducto, cantidad);
+            // Calcular total automáticamente después de agregar detalle
+            ventaService.calcularTotal(ventaActivaId);
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("stockError", e.getMessage());
         }
-        return "redirect:/ventas";
-    }
-
-    @PostMapping("/ventas/calcular")
-    public String calcularTotal(HttpSession session) {
-        Integer ventaActivaId = (Integer) session.getAttribute("ventaActivaId");
-        if (ventaActivaId == null) {
-            return "redirect:/ventas";
-        }
-
-        ventaService.calcularTotal(ventaActivaId);
         return "redirect:/ventas";
     }
 
