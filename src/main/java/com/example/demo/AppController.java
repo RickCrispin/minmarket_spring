@@ -8,11 +8,11 @@ import com.example.demo.services.CategoriaService;
 import com.example.demo.services.ProductoService;
 
 @Controller
-public class HelloController {
+public class AppController {
     private final ProductoService productoService;
     private final CategoriaService categoriaService;
 
-    public HelloController(ProductoService productoService, CategoriaService categoriaService) {
+    public AppController(ProductoService productoService, CategoriaService categoriaService) {
         this.productoService = productoService;
         this.categoriaService = categoriaService;
     }
