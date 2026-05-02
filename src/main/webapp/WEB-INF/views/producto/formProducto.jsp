@@ -30,6 +30,11 @@
                         </option>
                     </c:forEach>
                 </select>
+                <select name="estado" required>
+                    <option value="">Seleccionar estado...</option>
+                    <option value="Activo" <c:if test="${producto.estado == 'Activo'}">selected</c:if>>Activo</option>
+                    <option value="Inactivo" <c:if test="${producto.estado == 'Inactivo'}">selected</c:if>>Inactivo</option>
+                </select>
                 <button type="submit">Actualizar</button>
                 <a href="${pageContext.request.contextPath}/producto" style="color: rgb(255, 255, 255); text-decoration: none;">
                     <button type="button">Cancelar</button>

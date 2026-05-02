@@ -9,6 +9,7 @@ public class Producto {
     private Double precio;
     private Integer stock;
     private Integer idCategoria;
+    private String estado;
     private LocalDateTime fechaRegistro;
     private Categoria categoria;
 
@@ -21,6 +22,7 @@ public class Producto {
         Double precio,
         Integer stock,
         Integer idCategoria,
+        String estado,
         LocalDateTime fechaRegistro
     ){
         this.id = id;
@@ -29,6 +31,7 @@ public class Producto {
         this.precio = precio;
         this.stock = stock;
         this.idCategoria = idCategoria;
+        this.estado = estado;
         this.fechaRegistro = fechaRegistro;
     }
     public Producto(Integer id,
@@ -37,6 +40,7 @@ public class Producto {
         Double precio,
         Integer stock,
         Integer idCategoria,
+        String estado,
         LocalDateTime fechaRegistro,
         Categoria categoria
     ){
@@ -46,6 +50,7 @@ public class Producto {
         this.precio = precio;
         this.stock = stock;
         this.idCategoria = idCategoria;
+        this.estado = estado;
         this.fechaRegistro = fechaRegistro;
         this.categoria = categoria;
     }
@@ -96,6 +101,14 @@ public class Producto {
 
     public void setIdCategoria(Integer idCategoria) {
         this.idCategoria = idCategoria;
+    }
+
+    public String getEstado() {
+        return this.estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public LocalDateTime getFechaRegistro() {

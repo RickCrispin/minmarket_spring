@@ -15,6 +15,9 @@
         .toggle-input:checked + .toggle-label.open + .toggle-label.close + .form-container{ display:block; }
         .toggle-input:checked + .toggle-label.open{ display:none; }
         .toggle-input:checked + .toggle-label.open + .toggle-label.close{ display:inline-block; }
+        .estado-badge{ display:inline-block; padding:4px 10px; border-radius:999px; font-size:0.85rem; font-weight:600; color:#fff; }
+        .estado-activo{ background:#2f855a; }
+        .estado-inactivo{ background:#c53030; }
     </style>
 </head>
 
@@ -53,6 +56,7 @@
                     <th>Descripción</th>
                     <th>Precio</th>
                     <th>Stock</th>
+                    <th>Estado</th>
                     <th>Categoría</th>
                     <th>Acciones</th>
                 </tr>
@@ -65,6 +69,11 @@
                                 <td>${producto.descripcion}</td>
                                 <td>S/${producto.precio}</td>
                                 <td>${producto.stock}</td>
+                                <td>
+                                    <span class="estado-badge ${producto.estado == 'Activo' ? 'estado-activo' : 'estado-inactivo'}">
+                                        ${producto.estado}
+                                    </span>
+                                </td>
                                 <td>${producto.categoria.nombre}</td>
                                 <td>
                                     <form action="${pageContext.request.contextPath}/producto/edit/${producto.id}" method="get" style="display:inline;">
@@ -76,7 +85,7 @@
                     </c:when>
                     <c:otherwise>
                         <tr>
-                            <td colspan="7">No hay productos para mostrar.</td>
+                            <td colspan="8">No hay productos para mostrar.</td>
                         </tr>
                     </c:otherwise>
                 </c:choose>

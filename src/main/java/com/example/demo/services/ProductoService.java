@@ -6,6 +6,7 @@ import com.example.demo.model.Producto;
 
 public interface ProductoService {
     List<Producto> getAllProductos();
+    List<Producto> getAllProductosAdmin();
     Producto getProductoById(int id);
     void addProducto(Producto producto);
     void updateProducto(Producto producto);

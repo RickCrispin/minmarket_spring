@@ -15,6 +15,9 @@
         .toggle-input:checked + .toggle-label.open + .toggle-label.close + .form-container{ display:block; }
         .toggle-input:checked + .toggle-label.open{ display:none; }
         .toggle-input:checked + .toggle-label.open + .toggle-label.close{ display:inline-block; }
+        .estado-badge{ display:inline-block; padding:4px 10px; border-radius:999px; font-size:0.85rem; font-weight:600; color:#fff; }
+        .estado-activo{ background:#2f855a; }
+        .estado-inactivo{ background:#c53030; }
     </style>
 </head>
 
@@ -57,7 +60,11 @@
                         <td>${categoria.id}</td>
                         <td>${categoria.nombre}</td>
                         <td>${categoria.descripcion}</td>
-                        <td>${categoria.estado}</td>
+                        <td>
+                            <span class="estado-badge ${categoria.estado == 'Activo' ? 'estado-activo' : 'estado-inactivo'}">
+                                ${categoria.estado}
+                            </span>
+                        </td>
                         <td>
 
                             <!-- EDITAR -->
@@ -71,7 +78,7 @@
                                 <input type="hidden" name="_method" value="delete">
                                 <button type="submit" style="color: rgb(216, 255, 255);">Desactivar</button>
                             </form> -->
-                        </th>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>

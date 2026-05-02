@@ -27,6 +27,7 @@ public class ProductoRepository implements ProductoDAO {
         producto.setPrecio(rs.getDouble("precio"));
         producto.setStock(rs.getInt("stock"));
         producto.setIdCategoria(rs.getInt("id_categoria"));
+        producto.setEstado(rs.getString("estado"));
         producto.setFechaRegistro(rs.getTimestamp("fecha_registro") != null ? 
             rs.getTimestamp("fecha_registro").toLocalDateTime() : null);
         
@@ -47,6 +48,15 @@ public class ProductoRepository implements ProductoDAO {
                      "FROM productos p " +
                      "LEFT JOIN categorias c ON p.id_categoria = c.id " +
                      "WHERE p.estado = 'Activo' " +
+                     "ORDER BY p.id DESC";
+        return jdbcTemplate.query(sql, rowMapper);
+    }
+
+    @Override
+    public List<Producto> getAllProductosAdmin() {
+        String sql = "SELECT p.*, c.nombre_categoria, c.descripcion as cat_descripcion, c.estado as cat_estado " +
+                     "FROM productos p " +
+                     "LEFT JOIN categorias c ON p.id_categoria = c.id " +
                      "ORDER BY p.id DESC";
         return jdbcTemplate.query(sql, rowMapper);
     }
@@ -75,13 +85,14 @@ public class ProductoRepository implements ProductoDAO {
     @Override
     public void updateProducto(Producto producto) {
         String sql = "UPDATE productos SET nombre_producto = ?, descripcion = ?, precio = ?, " +
-                     "stock = ?, id_categoria = ? WHERE id = ?";
+                     "stock = ?, id_categoria = ?, estado = ? WHERE id = ?";
         jdbcTemplate.update(sql, 
             producto.getNombre(), 
             producto.getDescripcion(), 
             producto.getPrecio(), 
             producto.getStock(), 
             producto.getIdCategoria(), 
+            producto.getEstado(),
             producto.getId());
     }
 

@@ -22,6 +22,11 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
+    public List<Producto> getAllProductosAdmin() {
+        return productoDAO.getAllProductosAdmin();
+    }
+
+    @Override
     public Producto getProductoById(int id) {
         return productoDAO.getProductoById(id);
     }
