@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.demo.model.Usuario;
 import com.example.demo.services.UsuarioService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class UsuarioController {
     private final UsuarioService usuarioService;
@@ -19,8 +21,12 @@ public class UsuarioController {
     }
 
     @GetMapping("/usuario")
-    public String usuario(Model model) {
-        model.addAttribute("usuarios", usuarioService.getAllUsuarios());
+    public String usuario(HttpSession session,Model model) {
+        Usuario sessionUsuario = (Usuario) session.getAttribute("userLogged");
+        if (sessionUsuario == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("usuarios", usuarioService.getAllUsuarios(sessionUsuario.getId()));
         model.addAttribute("usuario", new Usuario());
         return "usuario/usuarios";
     }

@@ -8,6 +8,8 @@ import com.example.demo.model.Usuario;
 import com.example.demo.repositories.UsuarioDAO;
 import com.example.demo.services.UsuarioService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioDAO usuarioDAO;
@@ -17,8 +19,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public List<Usuario> getAllUsuarios() {
-        return usuarioDAO.getAllUsuarios();
+    public List<Usuario> getAllUsuarios(Integer userId) {
+        return usuarioDAO.getAllUsuarios(userId);
     }
 
     @Override

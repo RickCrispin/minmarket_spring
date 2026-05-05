@@ -3,12 +3,15 @@ package com.example.demo.repositories.impl;
 
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.jms.JmsProperties.Listener.Session;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.Usuario;
 import com.example.demo.repositories.UsuarioDAO;
+
+import jakarta.servlet.http.HttpSession;
 
 @Repository
 public class UsuarioRepository implements UsuarioDAO{
@@ -36,9 +39,9 @@ public class UsuarioRepository implements UsuarioDAO{
         return usuarios.isEmpty() ? null : usuarios.get(0);
     }
 
-    public List<Usuario> getAllUsuarios() {
-        String sql = "SELECT * FROM usuarios ORDER BY id DESC";
-        return jdbcTemplate.query(sql, rowMapper);
+        public List<Usuario> getAllUsuarios(Integer userId) {
+        String sql = "SELECT * FROM usuarios WHERE id != ? ORDER BY id DESC";
+        return jdbcTemplate.query(sql, rowMapper, userId);
     }
 
     public Usuario getUsuarioById(int id) {
