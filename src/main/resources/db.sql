@@ -45,7 +45,6 @@ CREATE TABLE productos (
     nombre_producto VARCHAR(150) NOT NULL,
     descripcion TEXT,
     precio DECIMAL(10,2) NOT NULL,
-    stock INT NOT NULL DEFAULT 0,
     id_categoria INT NOT NULL,
     estado ENUM('Activo','Inactivo') NOT NULL DEFAULT 'Activo',
     fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -127,22 +126,22 @@ VALUES
     ('Panadería', 'Productos horneados', 'Activo');
 
 -- PRODUCTOS 
-INSERT INTO productos (nombre_producto, descripcion, precio, stock, id_categoria, estado)
+INSERT INTO productos (nombre_producto, descripcion, precio, id_categoria, estado)
 VALUES
-    ('Agua Mineral 500ml', 'Botella individual sin gas', 2.50, 60, 1, 'Activo'),
-    ('Gaseosa Cola 355ml', 'Lata individual', 3.00, 48, 1, 'Activo'),
-    ('Jugo en Caja 1L', 'Bebida lista para consumo', 4.50, 30, 1, 'Activo'),
+    ('Agua Mineral 500ml', 'Botella individual sin gas', 2.50, 1, 'Activo'),
+    ('Gaseosa Cola 355ml', 'Lata individual', 3.00, 1, 'Activo'),
+    ('Jugo en Caja 1L', 'Bebida lista para consumo', 4.50, 1, 'Activo'),
 
-    ('Leche UHT 1L', 'Leche larga vida', 5.60, 35, 2, 'Activo'),
-    ('Yogurt Bebible 250ml', 'Presentación individual', 2.80, 40, 2, 'Activo'),
+    ('Leche UHT 1L', 'Leche larga vida', 5.60, 2, 'Activo'),
+    ('Yogurt Bebible 250ml', 'Presentación individual', 2.80, 2, 'Activo'),
 
-    ('Fideos Spaghetti 500g', 'Paquete cerrado', 3.00, 45, 3, 'Activo'),
-    ('Arroz Extra 1Kg', 'Bolsa sellada', 4.20, 50, 3, 'Activo'),
+    ('Fideos Spaghetti 500g', 'Paquete cerrado', 3.00, 3, 'Activo'),
+    ('Arroz Extra 1Kg', 'Bolsa sellada', 4.20, 3, 'Activo'),
 
-    ('Chocolate Barra 100g', 'Unidad individual', 3.50, 55, 4, 'Activo'),
-    ('Papas Fritas Bolsa 100g', 'Snack en bolsa', 4.00, 38, 4, 'Activo'),
+    ('Chocolate Barra 100g', 'Unidad individual', 3.50, 4, 'Activo'),
+    ('Papas Fritas Bolsa 100g', 'Snack en bolsa', 4.00, 4, 'Activo'),
 
-    ('Pan de Molde', 'Pan en paquete sellado', 6.50, 25, 5, 'Activo');
+    ('Pan de Molde', 'Pan en paquete sellado', 6.50, 5, 'Activo');
 INSERT INTO ventas (id_usuario, fecha_venta, total, estado)
 VALUES
     (1, NOW(), 21.20, 'Concretado'),

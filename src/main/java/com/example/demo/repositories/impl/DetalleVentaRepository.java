@@ -24,7 +24,6 @@ public class DetalleVentaRepository implements DetalleVentaDAO {
                 rs.getString("nombre_producto"),
                 rs.getString("descripcion"),
                 rs.getDouble("precio"),
-                rs.getInt("stock"),
                 rs.getInt("id_categoria"),
                 null,
                 rs.getTimestamp("fecha_registro") != null ? rs.getTimestamp("fecha_registro").toLocalDateTime() : null
@@ -54,7 +53,7 @@ public class DetalleVentaRepository implements DetalleVentaDAO {
     @Override
     public List<DetalleVenta> getDetallesByVentaId(int idVenta) {
         String sql = "SELECT dv.id, dv.id_venta, dv.id_producto, dv.cantidad, dv.precio_unitario, dv.subtotal, " +
-                "p.nombre_producto, p.descripcion, p.precio, p.stock, p.id_categoria, p.fecha_registro " +
+            "p.nombre_producto, p.descripcion, p.precio, p.id_categoria, p.fecha_registro " +
                 "FROM detalle_venta dv " +
                 "INNER JOIN productos p ON dv.id_producto = p.id " +
                 "WHERE dv.id_venta = ? " +

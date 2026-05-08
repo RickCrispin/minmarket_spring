@@ -7,7 +7,6 @@ public class Producto {
     private String nombre;
     private String descripcion;
     private Double precio;
-    private Integer stock;
     private Integer idCategoria;
     private String estado;
     private LocalDateTime fechaRegistro;
@@ -20,7 +19,6 @@ public class Producto {
         String nombre,
         String descripcion,
         Double precio,
-        Integer stock,
         Integer idCategoria,
         String estado,
         LocalDateTime fechaRegistro
@@ -29,7 +27,6 @@ public class Producto {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
-        this.stock = stock;
         this.idCategoria = idCategoria;
         this.estado = estado;
         this.fechaRegistro = fechaRegistro;
@@ -38,7 +35,6 @@ public class Producto {
         String nombre,
         String descripcion,
         Double precio,
-        Integer stock,
         Integer idCategoria,
         String estado,
         LocalDateTime fechaRegistro,
@@ -48,7 +44,6 @@ public class Producto {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
-        this.stock = stock;
         this.idCategoria = idCategoria;
         this.estado = estado;
         this.fechaRegistro = fechaRegistro;
@@ -85,14 +80,6 @@ public class Producto {
 
     public void setPrecio(Double precio) {
         this.precio = precio;
-    }
-
-    public Integer getStock() {
-        return this.stock;
-    }
-
-    public void setStock(Integer stock) {
-        this.stock = stock;
     }
 
     public Integer getIdCategoria() {

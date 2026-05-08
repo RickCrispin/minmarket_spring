@@ -31,8 +31,8 @@
         <div class="container sales">
             <div class="products-col">
                 <h2>Productos</h2>
-                <c:if test="${not empty stockError}">
-                    <div class="alert-error">${stockError}</div>
+                <c:if test="${not empty detalleError}">
+                    <div class="alert-error">${detalleError}</div>
                 </c:if>
                 <div class="grid">
                     <c:choose>
@@ -41,13 +41,12 @@
                                 <div class="card">
                                     <h3>${producto.nombre}</h3>
                                     <p>S/${producto.precio}</p>
-                                    <p class="product-meta">Stock: ${producto.stock}</p>
                                     <p class="product-meta">Categoría: ${producto.categoria.nombre}</p>
                                     <c:choose>
                                         <c:when test="${not empty ventaActiva}">
                                             <form class="product-form" action="${pageContext.request.contextPath}/ventas/detalle" method="post">
                                                 <input type="hidden" name="idProducto" value="${producto.id}">
-                                                <input type="number" name="cantidad" min="1" max="${producto.stock}" value="1" required>
+                                                <input type="number" name="cantidad" min="1" value="1" required>
                                                 <button type="submit">Agregar</button>
                                             </form>
                                         </c:when>

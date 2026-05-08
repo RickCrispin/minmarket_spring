@@ -32,7 +32,7 @@
                 <h3>Accesos rápidos</h3>
                 <p>Atajos preparados para las tareas que más se usan durante el día.</p>
                 <ul>
-                    <li>Revisar productos con stock disponible</li>
+                    <li>Revisar productos activos del catálogo</li>
                     <li>Administrar categorías y catálogo</li>
                     <li>Consultar publicidad y contacto</li>
                 </ul>
@@ -46,7 +46,7 @@
             </article>
             <article class="stat-card">
                 <strong>Gestión</strong>
-                <p>Administra productos, precios, stock y categorías.</p>
+                <p>Administra productos, precios y categorías.</p>
             </article>
             <article class="stat-card">
                 <strong>Contenido</strong>

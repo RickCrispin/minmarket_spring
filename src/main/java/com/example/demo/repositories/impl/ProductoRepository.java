@@ -25,7 +25,6 @@ public class ProductoRepository implements ProductoDAO {
         producto.setNombre(rs.getString("nombre_producto"));
         producto.setDescripcion(rs.getString("descripcion"));
         producto.setPrecio(rs.getDouble("precio"));
-        producto.setStock(rs.getInt("stock"));
         producto.setIdCategoria(rs.getInt("id_categoria"));
         producto.setEstado(rs.getString("estado"));
         producto.setFechaRegistro(rs.getTimestamp("fecha_registro") != null ? 
@@ -72,25 +71,23 @@ public class ProductoRepository implements ProductoDAO {
 
     @Override
     public void addProducto(Producto producto) {
-        String sql = "INSERT INTO productos (nombre_producto, descripcion, precio, stock, id_categoria, estado) " +
-                     "VALUES (?, ?, ?, ?, ?, 'Activo')";
+        String sql = "INSERT INTO productos (nombre_producto, descripcion, precio, id_categoria, estado) " +
+                     "VALUES (?, ?, ?, ?, 'Activo')";
         jdbcTemplate.update(sql, 
             producto.getNombre(), 
             producto.getDescripcion(), 
             producto.getPrecio(), 
-            producto.getStock(), 
             producto.getIdCategoria());
     }
 
     @Override
     public void updateProducto(Producto producto) {
         String sql = "UPDATE productos SET nombre_producto = ?, descripcion = ?, precio = ?, " +
-                     "stock = ?, id_categoria = ?, estado = ? WHERE id = ?";
+                     "id_categoria = ?, estado = ? WHERE id = ?";
         jdbcTemplate.update(sql, 
             producto.getNombre(), 
             producto.getDescripcion(), 
             producto.getPrecio(), 
-            producto.getStock(), 
             producto.getIdCategoria(), 
             producto.getEstado(),
             producto.getId());

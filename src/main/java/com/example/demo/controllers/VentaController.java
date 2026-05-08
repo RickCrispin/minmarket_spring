@@ -78,7 +78,7 @@ public class VentaController {
             // Calcular total automáticamente después de agregar detalle
             ventaService.calcularTotal(ventaActivaId);
         } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("stockError", e.getMessage());
+            redirectAttributes.addFlashAttribute("detalleError", e.getMessage());
         }
         return "redirect:/ventas";
     }

@@ -20,7 +20,6 @@
                 <input type="text" name="nombre" value="${producto.nombre}" placeholder="Nombre producto" required>
                 <input type="text" name="descripcion" value="${producto.descripcion}" placeholder="Descripción">
                 <input type="number" name="precio" value="${producto.precio}" placeholder="Precio" step="0.01" required>
-                <input type="number" name="stock" value="${producto.stock}" placeholder="Stock" required>
                 <select name="idCategoria" required>
                     <option value="">Seleccionar categoría...</option>
                     <c:forEach var="categoria" items="${categorias}">

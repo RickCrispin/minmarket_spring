@@ -39,7 +39,6 @@
                     <input type="text" name="nombre" placeholder="Nombre producto" required>
                     <input type="text" name="descripcion" placeholder="Descripción">
                     <input type="number" name="precio" placeholder="Precio" step="0.01" required>
-                    <input type="number" name="stock" placeholder="Stock" required>
                     <select name="idCategoria" required>
                         <option value="">Seleccionar categoría...</option>
                         <c:forEach var="categoria" items="${categorias}">
@@ -57,7 +56,6 @@
                     <th>Producto</th>
                     <th>Descripción</th>
                     <th>Precio</th>
-                    <th>Stock</th>
                     <th>Estado</th>
                     <th>Categoría</th>
                     <th>Acciones</th>
@@ -70,7 +68,6 @@
                                 <td>${producto.nombre}</td>
                                 <td>${producto.descripcion}</td>
                                 <td>S/${producto.precio}</td>
-                                <td>${producto.stock}</td>
                                 <td>
                                     <span class="estado-badge ${producto.estado == 'Activo' ? 'estado-activo' : 'estado-inactivo'}">
                                         ${producto.estado}
