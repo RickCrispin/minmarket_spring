@@ -44,7 +44,7 @@
                     <div class="meta">
                         <div>Boleta: <strong>#${venta.id}</strong></div>
                         <div>Fecha: ${venta.fechaVenta}</div>
-                        <div>Usuario ID: ${venta.idUsuario}</div>
+                        <div>Vendedor: ${venta.usuario.nombres}</div>
                         <div>Estado: ${venta.estado}</div>
                     </div>
                 </header>
