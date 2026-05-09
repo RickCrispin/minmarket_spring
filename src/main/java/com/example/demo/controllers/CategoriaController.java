@@ -21,8 +21,13 @@ public class CategoriaController {
     @GetMapping("/categoria")
     public String categoria(Model model){
         model.addAttribute("categorias", categoriaService.getAllCategorias());
-        model.addAttribute("categoria", new Categoria());
         return "components/categoria/categoria";
+    }
+
+    @GetMapping("/categoria/add")
+    public String addCategoriaForm(Model model){
+        model.addAttribute("categoria", new Categoria());
+        return "components/categoria/formCategoriaAdd";
     }
 
     @PostMapping("/categoria")

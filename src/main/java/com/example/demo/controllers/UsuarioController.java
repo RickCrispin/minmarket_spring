@@ -27,8 +27,17 @@ public class UsuarioController {
             return "redirect:/login";
         }
         model.addAttribute("usuarios", usuarioService.getAllUsuarios(sessionUsuario.getId()));
-        model.addAttribute("usuario", new Usuario());
         return "usuario/usuarios";
+    }
+
+    @GetMapping("/usuario/add")
+    public String addUsuarioForm(HttpSession session, Model model) {
+        Usuario sessionUsuario = (Usuario) session.getAttribute("userLogged");
+        if (sessionUsuario == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("usuario", new Usuario());
+        return "usuario/formUsuarioAdd";
     }
 
     @PostMapping("/usuario")

@@ -18,7 +18,6 @@
                 <div>
                     <span class="eyebrow">Ventas registradas</span>
                     <h2>Historial de Ventas</h2>
-                    <p>Revisa cada venta con sus productos, total y estado. Las ventas pendientes permiten continuar, finalizar o cancelar desde la misma tarjeta.</p>
                 </div>
             </div>
 
@@ -89,7 +88,10 @@
                                             </form>
                                         </c:when>
                                         <c:otherwise>
-                                            <span class="history-note">Venta cerrada. Solo disponible para consulta.</span>
+                                            <div class="history-closed">
+                                                <span class="history-note">Venta cerrada. Solo disponible para consulta.</span>
+                                                <a href="${pageContext.request.contextPath}/ventas/boleta/${venta.id}"><button class="btn-primary history-btn">Ver boleta</button></a>
+                                            </div>
                                         </c:otherwise>
                                     </c:choose>
                                 </div>

@@ -28,28 +28,16 @@
     <c:set var="headerTitle" value="Gestión" />
     <jsp:include page="/WEB-INF/views/components/navbara.jsp" />
     <main>
-        <div class="container">
-            <h2>Gestión de Inventario</h2>
-            <!-- Control CSS-only para mostrar/ocultar formulario de nuevo producto -->
-            <input type="checkbox" id="toggleProducto" class="toggle-input" />
-            <label for="toggleProducto" class="toggle-label open">Añadir nuevo producto</label>
-            <label for="toggleProducto" class="toggle-label close" style="display:none;">Cerrar</label>
-            <div class="form-container">
-                <form class="form-section" id="productoForm" action="${pageContext.request.contextPath}/producto" method="post">
-                    <input type="text" name="nombre" placeholder="Nombre producto" required>
-                    <input type="text" name="descripcion" placeholder="Descripción">
-                    <input type="number" name="precio" placeholder="Precio" step="0.01" required>
-                    <select name="idCategoria" required>
-                        <option value="">Seleccionar categoría...</option>
-                        <c:forEach var="categoria" items="${categorias}">
-                            <option value="${categoria.id}">${categoria.nombre}</option>
-                        </c:forEach>
-                    </select>
-                    <button type="submit">Agregar</button>
-                </form>
-            </div>
+        <div class="container manager-page">
+            <section class="manager-hero">
+                <span class="eyebrow">Gestor de inventario</span>
+                <h2>Inventario</h2>
+                <div class="manager-toolbar">
+                    <a href="${pageContext.request.contextPath}/producto/add"><button type="button">Añadir nuevo producto</button></a>
+                </div>
+            </section>
 
-            <h3>Inventario</h3>
+            <section class="manager-table-card">
             <table>
                 <tr>
                     <th>ID</th>
@@ -89,6 +77,7 @@
                     </c:otherwise>
                 </c:choose>
             </table>
+            </section>
         </div>
     </main>
 </body>

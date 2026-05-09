@@ -46,7 +46,7 @@ public class ProductoRepository implements ProductoDAO {
         String sql = "SELECT p.*, c.nombre_categoria, c.descripcion as cat_descripcion, c.estado as cat_estado " +
                      "FROM productos p " +
                      "LEFT JOIN categorias c ON p.id_categoria = c.id " +
-                     "WHERE p.estado = 'Activo' " +
+                     "WHERE p.estado = 'Activo' AND c.estado = 'Activo' " +
                      "ORDER BY p.id DESC";
         return jdbcTemplate.query(sql, rowMapper);
     }

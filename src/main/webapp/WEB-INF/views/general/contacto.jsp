@@ -19,8 +19,8 @@
                 <div class="info">
                     <h2>Información</h2>
                     <p><strong>Ubicación:</strong> Calle Principal 123</p>
-                    <p><strong>Teléfono:</strong> +1 (555) 123-4567</p>
-                    <p><strong>Email:</strong> info@minimarket.com</p>
+                    <p><strong>Teléfono:</strong> +51 904426338</p>
+                    <p><strong>Email:</strong> eltilininsano@minimarket.com</p>
                 </div>
 
                 <div class="form">

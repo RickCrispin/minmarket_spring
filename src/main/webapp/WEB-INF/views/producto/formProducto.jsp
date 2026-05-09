@@ -14,8 +14,13 @@
     <c:set var="headerTitle" value="Editar Producto" />
     <jsp:include page="/WEB-INF/views/components/navbara.jsp" />
     <main>
-        <div class="container">
-            <h2>Editar Producto</h2>
+        <div class="container manager-page">
+            <section class="manager-hero">
+                <span class="eyebrow">Gestor de inventario</span>
+                <h2>Editar Producto</h2>
+            </section>
+
+            <section class="manager-form-card">
             <form class="form-section" action="${pageContext.request.contextPath}/producto/edit/${producto.id}" method="post">
                 <input type="text" name="nombre" value="${producto.nombre}" placeholder="Nombre producto" required>
                 <input type="text" name="descripcion" value="${producto.descripcion}" placeholder="Descripción">
@@ -34,11 +39,12 @@
                     <option value="Activo" <c:if test="${producto.estado == 'Activo'}">selected</c:if>>Activo</option>
                     <option value="Inactivo" <c:if test="${producto.estado == 'Inactivo'}">selected</c:if>>Inactivo</option>
                 </select>
-                <button type="submit">Actualizar</button>
-                <a href="${pageContext.request.contextPath}/producto" style="color: rgb(255, 255, 255); text-decoration: none;">
-                    <button type="button">Cancelar</button>
-                </a>
+                <div class="manager-form-actions">
+                    <button type="submit">Actualizar</button>
+                    <a href="${pageContext.request.contextPath}/producto"><button type="button">Cancelar</button></a>
+                </div>
             </form>
+            </section>
         </div>
     </main>
 </body>

@@ -14,8 +14,13 @@
     <c:set var="headerTitle" value="Gestión" />
     <jsp:include page="/WEB-INF/views/components/navbara.jsp" />
     <main>
-        <div class="container">
-            <h2>Editar Categoría</h2>
+        <div class="container manager-page">
+            <section class="manager-hero">
+                <span class="eyebrow">Gestor de categorías</span>
+                <h2>Editar Categoría</h2>
+            </section>
+
+            <section class="manager-form-card">
             <form class="form-section" action="${pageContext.request.contextPath}/categoria/edit/${categoria.id}" method="post">
                 <input type="text" name="nombre" value="${categoria.nombre}" required>
                 <input type="text" name="descripcion" value="${categoria.descripcion}">
@@ -24,8 +29,12 @@
                     <option value="Activo" ${categoria.estado == 'Activo' ? 'selected' : ''}>Activo</option>
                     <option value="Inactivo" ${categoria.estado == 'Inactivo' ? 'selected' : ''}>Inactivo</option>
                 </select>
-                <button type="submit">Actualizar</button>
+                <div class="manager-form-actions">
+                    <button type="submit">Actualizar</button>
+                    <a href="${pageContext.request.contextPath}/categoria"><button type="button">Cancelar</button></a>
+                </div>
             </form>
+            </section>
         </div>
     </main>
 </body>

@@ -26,27 +26,16 @@
     <c:set var="headerTitle" value="Gestión" />
     <jsp:include page="/WEB-INF/views/components/navbara.jsp" />
     <main>
-        <div class="container">
-            <h2>Gestión de Categorías</h2>
-            <!-- Control CSS-only para mostrar/ocultar formulario de nueva categoría -->
-            <input type="checkbox" id="toggleCategoria" class="toggle-input" />
-            <label for="toggleCategoria" class="toggle-label open">Añadir nueva categoría</label>
-            <label for="toggleCategoria" class="toggle-label close" style="display:none;">Cerrar</label>
-            <div class="form-container">
-                <form class="form-section" action="${pageContext.request.contextPath}/categoria" method="post">
-                    <input type="text" name="nombre" placeholder="Nombre categoría..." required>
-                    <input type="text" name="descripcion" placeholder="Descripción...">
-                    <select name="estado" required>
-                        <option value="">Seleccionar estado...</option>
-                        <option value="Activo">Activo</option>
-                        <option value="Inactivo">Inactivo</option>
-                    </select>
-                    <button type="submit">Agregar</button>
-                </form>
-            </div>
+        <div class="container manager-page">
+            <section class="manager-hero">
+                <span class="eyebrow">Gestor de categorías</span>
+                <h2>Categorías</h2>
+                <div class="manager-toolbar">
+                    <a href="${pageContext.request.contextPath}/categoria/add"><button type="button">Añadir nueva categoría</button></a>
+                </div>
+            </section>
 
-            <h3>Categorías</h3>
-            <!-- Tabla de categorías -->
+            <section class="manager-table-card">
             <table>
                 <tr>
                     <th>ID</th>
@@ -71,17 +60,11 @@
                             <form action="${pageContext.request.contextPath}/categoria/edit/${categoria.id}" method="get" style="display:inline;">
                                 <button type="submit" style="color: rgb(255, 255, 255);">Editar</button>
                             </form>
-
-                            <!-- PENDIENTE -->
-                            <!-- DESACTIVAR -->
-                            <!-- <form action="${pageContext.request.contextPath}/categoria/${categoria.id}" method="post" style="display:inline;">
-                                <input type="hidden" name="_method" value="delete">
-                                <button type="submit" style="color: rgb(216, 255, 255);">Desactivar</button>
-                            </form> -->
                         </td>
                     </tr>
                 </c:forEach>
             </table>
+            </section>
         </div>
     </main>
 </body>

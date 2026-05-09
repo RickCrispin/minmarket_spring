@@ -26,29 +26,16 @@
     <c:set var="headerTitle" value="Usuarios" />
     <jsp:include page="/WEB-INF/views/components/navbara.jsp" />
     <main>
-        <div class="container">
-            <h2>Gestión de Usuarios</h2>
-            <!-- Control CSS-only para mostrar/ocultar formulario de nuevo usuario -->
-            <input type="checkbox" id="toggleUsuario" class="toggle-input" />
-            <label for="toggleUsuario" class="toggle-label open">Añadir nuevo usuario</label>
-            <label for="toggleUsuario" class="toggle-label close" style="display:none;">Cerrar</label>
-            <div class="form-container">
-                <form class="form-section" id="usuarioForm" action="${pageContext.request.contextPath}/usuario" method="post">
-                    <input type="text" name="nombres" placeholder="Nombres" required>
-                    <input type="text" name="apellidos" placeholder="Apellidos" required>
-                    <input type="email" name="correo" placeholder="Correo" required>
-                    <input type="password" name="password" placeholder="Password" required>
-                    <input type="text" name="telefono" placeholder="Teléfono">
-                    <input type="text" name="direccion" placeholder="Dirección">
-                    <select name="estado" required>
-                        <option value="Activo">Activo</option>
-                        <option value="Inactivo">Inactivo</option>
-                    </select>
-                    <button type="submit">Agregar</button>
-                </form>
-            </div>
+        <div class="container manager-page">
+            <section class="manager-hero">
+                <span class="eyebrow">Gestor de usuarios</span>
+                <h2>Usuarios</h2>
+                <div class="manager-toolbar">
+                    <a href="${pageContext.request.contextPath}/usuario/add"><button type="button">Añadir nuevo usuario</button></a>
+                </div>
+            </section>
 
-            <h3>Usuarios</h3>
+            <section class="manager-table-card">
             <table>
                 <tr>
                     <th>ID</th>
@@ -88,6 +75,7 @@
                     </c:otherwise>
                 </c:choose>
             </table>
+            </section>
         </div>
     </main>
 </body>
