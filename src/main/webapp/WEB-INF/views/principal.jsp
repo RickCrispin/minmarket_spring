@@ -14,62 +14,106 @@
     <jsp:include page="/WEB-INF/views/components/navbara.jsp" />
 
     <main class="container principal-page">
-        <section class="hero-panel">
+        <section class="hero-panel principal-hero">
             <div class="hero-copy">
                 <span class="eyebrow">MiniMarket</span>
-                <h2>Panel principal para operar el negocio desde un solo lugar.</h2>
+                <h2>Centro de operaciones para vender, administrar y analizar.</h2>
                 <p>
-                    Accede rápido a ventas, gestión de productos, categorías y contenidos públicos
-                    para mantener el flujo de trabajo ordenado.
+                    Mantén el ritmo del negocio con accesos directos a ventas, historial, estadísticas
+                    y gestión de catálogo, usuarios y categorías.
                 </p>
                 <div class="hero-actions">
                     <a class="btn-primary" href="${pageContext.request.contextPath}/ventas">Ir a ventas</a>
-                    <a class="secondary-link" href="${pageContext.request.contextPath}/gestion">Gestionar inventario</a>
-                    <a class="secondary-link" href="${pageContext.request.contextPath}/usuario">Usuarios</a>
+                    <a class="btn-ghost" href="${pageContext.request.contextPath}/ventas/historial">Historial</a>
+                    <a class="btn-ghost" href="${pageContext.request.contextPath}/estadisticas">Estadísticas</a>
+                </div>
+                <div class="hero-tags">
+                    <span>Ventas</span>
+                    <span>Historial</span>
+                    <span>Estadísticas</span>
+                    <span>Inventario</span>
                 </div>
             </div>
-            <aside class="hero-card">
-                <h3>Accesos rápidos</h3>
-                <p>Atajos preparados para las tareas que más se usan durante el día.</p>
-                <ul>
-                    <li>Revisar productos activos del catálogo</li>
-                    <li>Administrar categorías y catálogo</li>
-                    <li>Consultar publicidad y contacto</li>
-                </ul>
+            <aside class="hero-card quick-card">
+                <h3>Accesos clave</h3>
+                <p>Atajos listos para las tareas frecuentes del día.</p>
+                <div class="quick-grid">
+                    <a class="quick-link" href="${pageContext.request.contextPath}/producto">
+                        <span>Productos</span>
+                        <small>Inventario activo</small>
+                    </a>
+                    <a class="quick-link" href="${pageContext.request.contextPath}/categoria">
+                        <span>Categorías</span>
+                        <small>Organiza tu catálogo</small>
+                    </a>
+                    <a class="quick-link" href="${pageContext.request.contextPath}/usuario">
+                        <span>Usuarios</span>
+                        <small>Gestión de cuentas</small>
+                    </a>
+                    <a class="quick-link" href="${pageContext.request.contextPath}/publicidad">
+                        <span>Publicidad</span>
+                        <small>Contenido visible</small>
+                    </a>
+                </div>
             </aside>
         </section>
 
-        <section class="stats-grid">
-            <article class="stat-card">
-                <strong>Ventas</strong>
-                <p>Ingresa al flujo de cobro y armando de carrito.</p>
-            </article>
-            <article class="stat-card">
-                <strong>Gestión</strong>
-                <p>Administra productos, precios y categorías.</p>
-            </article>
-            <article class="stat-card">
-                <strong>Contenido</strong>
-                <p>Mantén visibles la publicidad y los datos de contacto.</p>
-            </article>
+        <section class="principal-section">
+            <div class="section-title">
+                <h3>Operacion diaria</h3>
+                <p>Ingresa directo a lo que necesitas para cobrar y revisar ventas.</p>
+            </div>
+            <div class="action-grid">
+                <a class="action-card" href="${pageContext.request.contextPath}/ventas">
+                    <h4>Ventas</h4>
+                    <p>Abre el punto de venta y genera boletas.</p>
+                    <span>Entrar</span>
+                </a>
+                <a class="action-card" href="${pageContext.request.contextPath}/ventas/historial">
+                    <h4>Historial</h4>
+                    <p>Revisa ventas pendientes y concretadas.</p>
+                    <span>Ver historial</span>
+                </a>
+                <a class="action-card" href="${pageContext.request.contextPath}/estadisticas">
+                    <h4>Estadísticas</h4>
+                    <p>Productos mas vendidos y ventas mensuales.</p>
+                    <span>Analizar</span>
+                </a>
+            </div>
         </section>
 
-        <section class="feature-grid">
-            <article class="feature-card">
-                <h3>Catálogo</h3>
-                <p>Revisa y organiza la información del inventario sin salir del panel.</p>
-                <a href="${pageContext.request.contextPath}/usuario">Abrir gestión</a>
-            </article>
-            <article class="feature-card">
-                <h3>Promociones</h3>
-                <p>Publica la información que acompaña la experiencia de compra.</p>
-                <a href="${pageContext.request.contextPath}/publicidad">Ver publicidad</a>
-            </article>
-            <article class="feature-card">
-                <h3>Atención</h3>
-                <p>Consulta la página de contacto para mantener visibles los canales de comunicación.</p>
-                <a href="${pageContext.request.contextPath}/contacto">Ir a contacto</a>
-            </article>
+        <section class="principal-section">
+            <div class="section-title">
+                <h3>Gestion y contenidos</h3>
+                <p>Administra catalogo, usuarios y contenido publico.</p>
+            </div>
+            <div class="action-grid">
+                <a class="action-card" href="${pageContext.request.contextPath}/producto">
+                    <h4>Productos</h4>
+                    <p>Altas, ediciones y control del inventario.</p>
+                    <span>Abrir</span>
+                </a>
+                <a class="action-card" href="${pageContext.request.contextPath}/categoria">
+                    <h4>Categorías</h4>
+                    <p>Ordena y activa tus categorías.</p>
+                    <span>Gestionar</span>
+                </a>
+                <a class="action-card" href="${pageContext.request.contextPath}/usuario">
+                    <h4>Usuarios</h4>
+                    <p>Administra cuentas y accesos.</p>
+                    <span>Ver usuarios</span>
+                </a>
+                <a class="action-card" href="${pageContext.request.contextPath}/publicidad">
+                    <h4>Publicidad</h4>
+                    <p>Actualiza la informacion comercial.</p>
+                    <span>Editar</span>
+                </a>
+                <a class="action-card" href="${pageContext.request.contextPath}/contacto">
+                    <h4>Contacto</h4>
+                    <p>Mantén visibles los canales de soporte.</p>
+                    <span>Ir</span>
+                </a>
+            </div>
         </section>
     </main>
 </body>
