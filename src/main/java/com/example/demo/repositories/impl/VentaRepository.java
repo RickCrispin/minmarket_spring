@@ -56,6 +56,12 @@ public class VentaRepository implements VentaDAO {
     }
 
     @Override
+    public java.util.List<Venta> getAllVentas() {
+        String sql = "SELECT * FROM ventas ORDER BY id DESC";
+        return jdbcTemplate.query(sql, rowMapper);
+    }
+
+    @Override
     public void updateTotal(int idVenta, Double total) {
         String sql = "UPDATE ventas SET total = ? WHERE id = ?";
         jdbcTemplate.update(sql, total, idVenta);
@@ -65,5 +71,11 @@ public class VentaRepository implements VentaDAO {
     public void updateEstado(int idVenta, String estado) {
         String sql = "UPDATE ventas SET estado = ? WHERE id = ?";
         jdbcTemplate.update(sql, estado, idVenta);
+    }
+
+    @Override
+    public void deleteVenta(int idVenta) {
+        String sql = "DELETE FROM ventas WHERE id = ?";
+        jdbcTemplate.update(sql, idVenta);
     }
 }

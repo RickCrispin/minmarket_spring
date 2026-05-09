@@ -8,4 +8,6 @@ public interface VentaService {
     Venta getVentaConDetalles(Integer idVenta);
     Double calcularTotal(Integer idVenta);
     void confirmarVenta(Integer idVenta);
+    void cancelarVenta(Integer idVenta);
+    java.util.List<com.example.demo.model.Venta> getAllVentas();
 }

@@ -78,8 +78,32 @@ public class VentaServiceImpl implements VentaService {
     @Transactional
     public void confirmarVenta(Integer idVenta) {
         Double total = calcularTotal(idVenta);
-        ventaDAO.updateTotal(idVenta, total);
+        // No permitir confirmar ventas sin detalles o con total 0
+        List<DetalleVenta> detalles = detalleVentaDAO.getDetallesByVentaId(idVenta);
+        if (detalles == null || detalles.isEmpty() || total == null || total <= 0.0) {
+            throw new IllegalStateException("No se puede confirmar una venta sin productos o con total 0");
+        }
 
+        ventaDAO.updateTotal(idVenta, total);
         ventaDAO.updateEstado(idVenta, "Concretado");
+    }
+
+    @Override
+    public void cancelarVenta(Integer idVenta) {
+        Venta venta = ventaDAO.getVentaById(idVenta);
+        if (venta == null) {
+            throw new IllegalArgumentException("La venta no existe");
+        }
+        if ("Concretado".equalsIgnoreCase(venta.getEstado())) {
+            throw new IllegalStateException("No se puede cancelar una venta ya concretada");
+        }
+
+        // Eliminamos la venta; las filas de detalle se eliminan por la FK con cascade
+        ventaDAO.deleteVenta(idVenta);
+    }
+
+    @Override
+    public java.util.List<Venta> getAllVentas() {
+        return ventaDAO.getAllVentas();
     }
 }

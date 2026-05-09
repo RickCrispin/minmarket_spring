@@ -6,6 +6,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.demo.model.Usuario;
 import com.example.demo.model.Venta;
@@ -51,6 +52,22 @@ public class VentaController {
         return "venta/ventas";
     }
 
+    @GetMapping("/ventas/historial")
+    public String historial(Model model, HttpSession session) {
+        java.util.List<com.example.demo.model.Venta> ventas = ventaService.getAllVentas();
+        // cargar detalles para cada venta
+        java.util.List<com.example.demo.model.Venta> ventasConDetalles = new java.util.ArrayList<>();
+        for (com.example.demo.model.Venta v : ventas) {
+            com.example.demo.model.Venta full = ventaService.getVentaConDetalles(v.getId());
+            ventasConDetalles.add(full != null ? full : v);
+        }
+        model.addAttribute("ventas", ventasConDetalles);
+
+        Integer ventaActivaId = (Integer) session.getAttribute("ventaActivaId");
+        model.addAttribute("ventaActivaId", ventaActivaId);
+        return "venta/historial";
+    }
+
     @PostMapping("/ventas/iniciar")
     public String iniciarVenta(HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("userLogged");
@@ -61,6 +78,41 @@ public class VentaController {
         Integer ventaId = ventaService.iniciarVenta(usuario.getId());
         session.setAttribute("ventaActivaId", ventaId);
         return "redirect:/ventas";
+    }
+
+    @PostMapping("/ventas/continuar")
+    public String continuarVenta(@RequestParam Integer idVenta, HttpSession session) {
+        session.setAttribute("ventaActivaId", idVenta);
+        return "redirect:/ventas";
+    }
+
+    @PostMapping("/ventas/confirmar/{id}")
+    public String confirmarVentaById(@PathVariable Integer id, HttpSession session, RedirectAttributes redirectAttributes) {
+        try {
+            ventaService.confirmarVenta(id);
+            Integer ventaActivaId = (Integer) session.getAttribute("ventaActivaId");
+            if (ventaActivaId != null && ventaActivaId.equals(id)) {
+                session.removeAttribute("ventaActivaId");
+                return "redirect:/ventas";
+            }
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("detalleError", e.getMessage());
+        }
+        return "redirect:/ventas/historial";
+    }
+
+    @PostMapping("/ventas/cancelar/{id}")
+    public String cancelarVentaById(@PathVariable Integer id, RedirectAttributes redirectAttributes, HttpSession session) {
+        try {
+            ventaService.cancelarVenta(id);
+            Integer ventaActivaId = (Integer) session.getAttribute("ventaActivaId");
+            if (ventaActivaId != null && ventaActivaId.equals(id)) {
+                session.removeAttribute("ventaActivaId");
+            }
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("detalleError", e.getMessage());
+        }
+        return "redirect:/ventas/historial";
     }
 
     @PostMapping("/ventas/detalle")
@@ -84,14 +136,34 @@ public class VentaController {
     }
 
     @PostMapping("/ventas/confirmar")
-    public String confirmarVenta(HttpSession session) {
+    public String confirmarVenta(HttpSession session, RedirectAttributes redirectAttributes) {
         Integer ventaActivaId = (Integer) session.getAttribute("ventaActivaId");
         if (ventaActivaId == null) {
             return "redirect:/ventas";
         }
 
-        ventaService.confirmarVenta(ventaActivaId);
-        session.removeAttribute("ventaActivaId");
+        try {
+            ventaService.confirmarVenta(ventaActivaId);
+            session.removeAttribute("ventaActivaId");
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("detalleError", e.getMessage());
+        }
+        return "redirect:/ventas";
+    }
+
+    @PostMapping("/ventas/cancelar")
+    public String cancelarVenta(HttpSession session, RedirectAttributes redirectAttributes) {
+        Integer ventaActivaId = (Integer) session.getAttribute("ventaActivaId");
+        if (ventaActivaId == null) {
+            return "redirect:/ventas";
+        }
+
+        try {
+            ventaService.cancelarVenta(ventaActivaId);
+            session.removeAttribute("ventaActivaId");
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("detalleError", e.getMessage());
+        }
         return "redirect:/ventas";
     }
 }

@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    <c:set var="activePage" value="gestion" />
+    <c:set var="activePage" value="gestor-categorias" />
     <c:set var="headerTitle" value="Gestión" />
     <jsp:include page="/WEB-INF/views/components/navbara.jsp" />
     <main>

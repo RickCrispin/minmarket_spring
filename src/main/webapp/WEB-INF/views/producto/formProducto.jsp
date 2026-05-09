@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <c:set var="activePage" value="gestion" />
+    <c:set var="activePage" value="gestor-inventario" />
     <c:set var="headerTitle" value="Editar Producto" />
     <jsp:include page="/WEB-INF/views/components/navbara.jsp" />
     <main>

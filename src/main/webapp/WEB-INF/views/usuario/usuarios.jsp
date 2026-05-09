@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    <c:set var="activePage" value="usuarios" />
+    <c:set var="activePage" value="gestor-usuarios" />
     <c:set var="headerTitle" value="Usuarios" />
     <jsp:include page="/WEB-INF/views/components/navbara.jsp" />
     <main>

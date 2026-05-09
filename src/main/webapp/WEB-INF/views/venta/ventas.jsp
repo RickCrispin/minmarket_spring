@@ -93,6 +93,9 @@
                             <form action="${pageContext.request.contextPath}/ventas/confirmar" method="post">
                                 <button type="submit" class="btn-primary">Confirmar venta</button>
                             </form>
+                            <form action="${pageContext.request.contextPath}/ventas/cancelar" method="post">
+                                <button type="submit" class="btn-primary" style="background:linear-gradient(90deg,#c53030,#e53e3e); box-shadow:0 8px 20px rgba(229,62,62,0.12);">Cancelar venta</button>
+                            </form>
                         </div>
                     </c:when>
                     <c:otherwise>
