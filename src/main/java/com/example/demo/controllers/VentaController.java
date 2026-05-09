@@ -135,6 +135,23 @@ public class VentaController {
         return "redirect:/ventas";
     }
 
+    @PostMapping("/ventas/detalle/eliminar")
+    public String eliminarDetalle(@RequestParam Integer idDetalle,
+                                  HttpSession session,
+                                  RedirectAttributes redirectAttributes) {
+        Integer ventaActivaId = (Integer) session.getAttribute("ventaActivaId");
+        if (ventaActivaId == null) {
+            return "redirect:/ventas";
+        }
+
+        try {
+            ventaService.eliminarDetalle(ventaActivaId, idDetalle);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("detalleError", e.getMessage());
+        }
+        return "redirect:/ventas";
+    }
+
     @PostMapping("/ventas/confirmar")
     public String confirmarVenta(HttpSession session, RedirectAttributes redirectAttributes) {
         Integer ventaActivaId = (Integer) session.getAttribute("ventaActivaId");

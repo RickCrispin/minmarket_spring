@@ -51,6 +51,42 @@ public class DetalleVentaRepository implements DetalleVentaDAO {
     }
 
     @Override
+    public void updateDetalleVentaCantidad(Integer idVenta, Integer idProducto, Integer cantidad, Double precioUnitario) {
+        String sql = "UPDATE detalle_venta SET cantidad = ?, precio_unitario = ? WHERE id_venta = ? AND id_producto = ?";
+        jdbcTemplate.update(sql, cantidad, precioUnitario, idVenta, idProducto);
+    }
+
+    @Override
+    public void deleteDetalleVenta(Integer idDetalle) {
+        String sql = "DELETE FROM detalle_venta WHERE id = ?";
+        jdbcTemplate.update(sql, idDetalle);
+    }
+
+    @Override
+    public DetalleVenta getDetalleById(Integer idDetalle) {
+        String sql = "SELECT dv.id, dv.id_venta, dv.id_producto, dv.cantidad, dv.precio_unitario, dv.subtotal, " +
+                "p.nombre_producto, p.descripcion, p.precio, p.id_categoria, p.fecha_registro " +
+                "FROM detalle_venta dv " +
+                "INNER JOIN productos p ON dv.id_producto = p.id " +
+                "WHERE dv.id = ? " +
+                "LIMIT 1";
+        List<DetalleVenta> detalles = jdbcTemplate.query(sql, rowMapper, idDetalle);
+        return detalles.isEmpty() ? null : detalles.get(0);
+    }
+
+    @Override
+    public DetalleVenta getDetalleByVentaAndProducto(Integer idVenta, Integer idProducto) {
+        String sql = "SELECT dv.id, dv.id_venta, dv.id_producto, dv.cantidad, dv.precio_unitario, dv.subtotal, " +
+                "p.nombre_producto, p.descripcion, p.precio, p.id_categoria, p.fecha_registro " +
+                "FROM detalle_venta dv " +
+                "INNER JOIN productos p ON dv.id_producto = p.id " +
+                "WHERE dv.id_venta = ? AND dv.id_producto = ? " +
+                "ORDER BY dv.id ASC LIMIT 1";
+        List<DetalleVenta> detalles = jdbcTemplate.query(sql, rowMapper, idVenta, idProducto);
+        return detalles.isEmpty() ? null : detalles.get(0);
+    }
+
+    @Override
     public List<DetalleVenta> getDetallesByVentaId(int idVenta) {
         String sql = "SELECT dv.id, dv.id_venta, dv.id_producto, dv.cantidad, dv.precio_unitario, dv.subtotal, " +
             "p.nombre_producto, p.descripcion, p.precio, p.id_categoria, p.fecha_registro " +

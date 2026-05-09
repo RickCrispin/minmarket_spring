@@ -11,6 +11,7 @@ public class Venta {
     private String estado;
 
     private List<DetalleVenta> detalles;
+    private Usuario usuario;
 
     
     public Venta() {
@@ -79,4 +80,10 @@ public class Venta {
         this.detalles = detalles;
     }
     
+    public Usuario getUsuario() {
+        return this.usuario;
+    }
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }

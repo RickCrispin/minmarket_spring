@@ -44,7 +44,7 @@
                                 <div class="history-meta">
                                     <div>
                                         <span>Usuario</span>
-                                        <strong>${venta.idUsuario}</strong>
+                                        <strong>${venta.usuario.nombres}</strong>
                                     </div>
                                     <div>
                                         <span>Fecha</span>

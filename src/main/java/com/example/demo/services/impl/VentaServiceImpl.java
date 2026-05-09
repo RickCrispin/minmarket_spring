@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.model.DetalleVenta;
 import com.example.demo.model.Producto;
+import com.example.demo.model.Usuario;
 import com.example.demo.model.Venta;
 import com.example.demo.repositories.DetalleVentaDAO;
+import com.example.demo.repositories.UsuarioDAO;
 import com.example.demo.repositories.VentaDAO;
 import com.example.demo.services.ProductoService;
 import com.example.demo.services.VentaService;
@@ -18,11 +20,13 @@ public class VentaServiceImpl implements VentaService {
     private final VentaDAO ventaDAO;
     private final DetalleVentaDAO detalleVentaDAO;
     private final ProductoService productoService;
+    private final UsuarioDAO usuarioDAO;
 
-    public VentaServiceImpl(VentaDAO ventaDAO, DetalleVentaDAO detalleVentaDAO, ProductoService productoService) {
+    public VentaServiceImpl(VentaDAO ventaDAO, DetalleVentaDAO detalleVentaDAO, ProductoService productoService, UsuarioDAO usuarioDAO) {
         this.ventaDAO = ventaDAO;
         this.detalleVentaDAO = detalleVentaDAO;
         this.productoService = productoService;
+        this.usuarioDAO = usuarioDAO;
     }
 
     @Override
@@ -41,6 +45,15 @@ public class VentaServiceImpl implements VentaService {
             throw new IllegalArgumentException("El producto no existe");
         }
 
+        DetalleVenta detalleExistente = detalleVentaDAO.getDetalleByVentaAndProducto(idVenta, idProducto);
+        if (detalleExistente != null) {
+            detalleVentaDAO.updateDetalleVentaCantidad(idVenta, idProducto, cantidad, producto.getPrecio());
+            detalleExistente.setCantidad(cantidad);
+            detalleExistente.setPrecioUnitario(producto.getPrecio());
+            detalleExistente.setSubTotal(producto.getPrecio() * cantidad);
+            return;
+        }
+
         DetalleVenta detalleVenta = new DetalleVenta();
         detalleVenta.setIdVenta(idVenta);
         detalleVenta.setIdProducto(idProducto);
@@ -53,11 +66,35 @@ public class VentaServiceImpl implements VentaService {
     }
 
     @Override
+    public void eliminarDetalle(Integer idVenta, Integer idDetalle) {
+        DetalleVenta detalle = detalleVentaDAO.getDetalleById(idDetalle);
+        if (detalle == null) {
+            throw new IllegalArgumentException("El detalle de venta no existe");
+        }
+        if (!idVenta.equals(detalle.getIdVenta())) {
+            throw new IllegalArgumentException("El detalle no pertenece a la venta activa");
+        }
+
+        Venta venta = ventaDAO.getVentaById(idVenta);
+        if (venta == null) {
+            throw new IllegalArgumentException("La venta no existe");
+        }
+        if ("Concretado".equalsIgnoreCase(venta.getEstado())) {
+            throw new IllegalStateException("No se puede modificar una venta concretada");
+        }
+
+        detalleVentaDAO.deleteDetalleVenta(idDetalle);
+        calcularTotal(idVenta);
+    }
+
+    @Override
     public Venta getVentaConDetalles(Integer idVenta) {
         Venta venta = ventaDAO.getVentaById(idVenta);
+        Usuario usuario = venta != null ? usuarioDAO.getUsuarioById(venta.getIdUsuario()) : null;
         if (venta == null) {
             return null;
         }
+        venta.setUsuario(usuario);
         venta.setDetalles(detalleVentaDAO.getDetallesByVentaId(idVenta));
         return venta;
     }

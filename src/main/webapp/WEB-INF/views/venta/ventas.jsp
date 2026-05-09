@@ -17,6 +17,9 @@
         .sale-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
         .sale-actions form{ display:inline; }
         .detail-list{ margin-top:12px; padding-left: 18px; }
+        .detail-list li{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
+        .detail-actions form{ display:inline; }
+        .detail-actions button{ border:0; border-radius:999px; padding:8px 12px; cursor:pointer; background:linear-gradient(90deg,#c53030,#e53e3e); color:#fff; font-weight:600; }
         .product-form{ margin-top: 12px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
         .product-form input[type="number"]{ width: 90px; }
         .product-meta{ font-size: 0.9em; color: #666; }
@@ -78,7 +81,18 @@
                             <c:when test="${not empty detallesVenta}">
                                 <ul class="detail-list">
                                     <c:forEach var="detalle" items="${detallesVenta}">
-                                        <li>${detalle.producto.nombre} x ${detalle.cantidad} - S/${detalle.subTotal}</li>
+                                        <li>
+                                            <div>
+                                                <strong>${detalle.producto.nombre}</strong>
+                                                <div class="product-meta">Cantidad: ${detalle.cantidad} | S/${detalle.subTotal}</div>
+                                            </div>
+                                            <div class="detail-actions">
+                                                <form action="${pageContext.request.contextPath}/ventas/detalle/eliminar" method="post">
+                                                    <input type="hidden" name="idDetalle" value="${detalle.id}">
+                                                    <button type="submit">Quitar</button>
+                                                </form>
+                                            </div>
+                                        </li>
                                     </c:forEach>
                                 </ul>
                             </c:when>
