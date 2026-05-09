@@ -5,7 +5,7 @@ import java.util.List;
 import com.example.demo.model.Usuario;
 
 public interface UsuarioService {
-    List<Usuario> getAllUsuarios();
+    List<Usuario> getAllUsuarios(Integer userId);
     Usuario getUsuarioById(int id);
     void addUsuario(Usuario usuario);
     void updateUsuario(Usuario usuario);
