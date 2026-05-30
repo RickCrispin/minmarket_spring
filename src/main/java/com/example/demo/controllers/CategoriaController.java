@@ -14,44 +14,44 @@ import com.example.demo.services.CategoriaService;
 public class CategoriaController {
     private final CategoriaService categoriaService;
 
-    public CategoriaController(CategoriaService categoriaService){
+    public CategoriaController(CategoriaService categoriaService) {
         this.categoriaService = categoriaService;
     }
 
     @GetMapping("/categoria")
-    public String categoria(Model model){
+    public String categoria(Model model) {
         model.addAttribute("categorias", categoriaService.getAllCategorias());
-        return "components/categoria/categoria";
+        return "categoria/categoria";
     }
 
     @GetMapping("/categoria/add")
-    public String addCategoriaForm(Model model){
+    public String addCategoriaForm(Model model) {
         model.addAttribute("categoria", new Categoria());
-        return "components/categoria/formCategoriaAdd";
+        return "categoria/formCategoriaAdd";
     }
 
     @PostMapping("/categoria")
-    public String addCategoria(@ModelAttribute Categoria categoria){
+    public String addCategoria(@ModelAttribute Categoria categoria) {
         categoriaService.addCategoria(categoria);
         return "redirect:/categoria";
     }
 
     @GetMapping("/categoria/edit/{id}")
-    public String editCategoria(@PathVariable int id, Model model){
+    public String editCategoria(@PathVariable int id, Model model) {
         Categoria categoria = categoriaService.getCategoriaById(id);
         model.addAttribute("categoria", categoria);
-        return "components/categoria/formCategoria";
+        return "categoria/formCategoria";
     }
 
     @PostMapping("/categoria/edit/{id}")
-    public String updateCategoria(@PathVariable int id, @ModelAttribute Categoria categoria){
+    public String updateCategoria(@PathVariable int id, @ModelAttribute Categoria categoria) {
         categoria.setId(id);
         categoriaService.updateCategoria(categoria);
         return "redirect:/categoria";
     }
 
     @PostMapping("/categoria/{id}")
-    public String desactivarCategoria(@PathVariable int id){
+    public String desactivarCategoria(@PathVariable int id) {
         categoriaService.desactivarCategoria(id);
         return "redirect:/categoria";
     }
