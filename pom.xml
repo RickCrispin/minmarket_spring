@@ -49,7 +49,7 @@
 			</dependency>
 
 
-			<!-- Spring Data JPA (incluye JDBC y DataSource) -->
+			<!-- Spring Data (incluye JDBC y DataSource) -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-jdbc</artifactId>
