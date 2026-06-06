@@ -1,6 +1,10 @@
 package com.example.demo.controllers;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.model.ProductoVendido;
 import com.example.demo.model.VentaMensual;
+import com.example.demo.model.TicketPromedioMensual;
+import com.example.demo.model.CategoriaIngresos;
 import com.example.demo.services.EstadisticaService;
 
 @Controller
@@ -25,24 +31,224 @@ public class EstadisticaController {
             @RequestParam(name = "top", required = false, defaultValue = "10") int top,
             @RequestParam(name = "months", required = false, defaultValue = "12") int months) {
 
-        List<ProductoVendido> topProductos = estadisticaService.getTopProductosVendidos(top);
-        List<VentaMensual> ventasMensuales = estadisticaService.getVentasMensuales(months);
+        int safeTop = normalizePositiveOrDefault(top, 10);
+        int safeMonths = normalizePositiveOrDefault(months, 12);
 
-        // calcular máximo para normalizar el ancho de las barras (evitar división por cero)
+        List<ProductoVendido> topProductos = estadisticaService.getTopProductosVendidos(safeTop);
+        List<VentaMensual> ventasMensuales = estadisticaService.getVentasMensuales(safeMonths);
+        java.util.List<com.example.demo.model.DiaVenta> ventasPorDia = estadisticaService.getVentasPorDiaSemana(safeMonths);
+        java.util.List<TicketPromedioMensual> ticketPromedio = estadisticaService.getTicketPromedioMensual(safeMonths);
+        java.util.List<CategoriaIngresos> topCategorias = estadisticaService.getTopCategoriasPorIngresos(safeMonths, safeTop);
+        java.util.List<ProductoVendido> productosMenosVendidos = estadisticaService.getProductosMenosVendidos(safeTop);
+        java.util.List<VentaMensual> promedioDiarioMensual = estadisticaService.getVentasPromedioDiarioMensual(safeMonths);
+
+        // map ticket promedio into VentaMensual for chart helpers
+        java.util.List<VentaMensual> ticketPromedioAsVenta = new java.util.ArrayList<>();
+        for (TicketPromedioMensual t : ticketPromedio) {
+            VentaMensual v = new VentaMensual();
+            v.setAno(t.getAno());
+            v.setMes(t.getMes());
+            v.setTotal(t.getPromedio());
+            ticketPromedioAsVenta.add(v);
+        }
+
+        // series for top category (monthly ingresos) and worst product (monthly cantidad)
+        java.util.List<VentaMensual> categoriaSerie = new java.util.ArrayList<>();
+        if (!topCategorias.isEmpty()) {
+            Integer idCat = topCategorias.get(0).getIdCategoria();
+            if (idCat != null) {
+                categoriaSerie = estadisticaService.getVentasMensualesPorCategoria(safeMonths, idCat);
+            }
+        }
+
+        java.util.List<VentaMensual> productoSerie = new java.util.ArrayList<>();
+        if (!productosMenosVendidos.isEmpty()) {
+            Integer idProd = productosMenosVendidos.get(0).getIdProducto();
+            if (idProd != null) {
+                productoSerie = estadisticaService.getCantidadMensualPorProducto(safeMonths, idProd);
+            }
+        }
+
+        // compute common max across all series to keep same Y scale
+        double overallMax = computeOverallMax(ventasMensuales, promedioDiarioMensual, ticketPromedioAsVenta, categoriaSerie, productoSerie);
+        if (overallMax <= 0.0) overallMax = 1.0;
+
+        // calcular máximo para normalizar la serie temporal (evitar división por cero)
         double maxTotal = ventasMensuales.stream()
-            .mapToDouble(v -> v.getTotal() != null ? v.getTotal() : 0.0)
+            .mapToDouble(this::getTotalValue)
             .max()
             .orElse(0.0);
         if (maxTotal <= 0.0) {
-            maxTotal = 1.0; // para que no haya división por cero en la vista
+            maxTotal = 1.0;
         }
 
         model.addAttribute("topProductos", topProductos);
         model.addAttribute("ventasMensuales", ventasMensuales);
-        model.addAttribute("maxVentaTotal", maxTotal);
+        model.addAttribute("ventasSeriePath", buildSeriesPath(ventasMensuales, maxTotal));
+        model.addAttribute("ventasSerieAreaPath", buildSeriesAreaPath(ventasMensuales, maxTotal));
+        model.addAttribute("ventasSeriePoints", buildSeriesPoints(ventasMensuales, maxTotal));
+        model.addAttribute("ventasSerieYTicks", buildYAxisTicks(maxTotal));
+        model.addAttribute("ventasSerieXAxisLabel", "Mes / Año");
+        model.addAttribute("ventasSerieYAxisLabel", "Ventas (S/.)");
+        model.addAttribute("ventasSerieMaxLabel", String.format(Locale.US, "%.2f", maxTotal));
         model.addAttribute("activePage", "estadisticas");
         model.addAttribute("headerTitle", "Estadísticas");
+        model.addAttribute("ventasPorDia", ventasPorDia);
+        model.addAttribute("ticketPromedioMensual", ticketPromedio);
+        model.addAttribute("topCategoriasIngresos", topCategorias);
+        model.addAttribute("productosMenosVendidos", productosMenosVendidos);
+
+        // expose series for charts (paths, areas, points)
+        model.addAttribute("promedioDiarioSeriePath", buildSeriesPath(promedioDiarioMensual, overallMax));
+        model.addAttribute("promedioDiarioSerieAreaPath", buildSeriesAreaPath(promedioDiarioMensual, overallMax));
+        model.addAttribute("promedioDiarioSeriePoints", buildSeriesPoints(promedioDiarioMensual, overallMax));
+
+        model.addAttribute("ticketPromedioSeriePath", buildSeriesPath(ticketPromedioAsVenta, overallMax));
+        model.addAttribute("ticketPromedioSerieAreaPath", buildSeriesAreaPath(ticketPromedioAsVenta, overallMax));
+        model.addAttribute("ticketPromedioSeriePoints", buildSeriesPoints(ticketPromedioAsVenta, overallMax));
+
+        model.addAttribute("categoriaSeriePath", buildSeriesPath(categoriaSerie, overallMax));
+        model.addAttribute("categoriaSerieAreaPath", buildSeriesAreaPath(categoriaSerie, overallMax));
+        model.addAttribute("categoriaSeriePoints", buildSeriesPoints(categoriaSerie, overallMax));
+
+        model.addAttribute("productoSeriePath", buildSeriesPath(productoSerie, overallMax));
+        model.addAttribute("productoSerieAreaPath", buildSeriesAreaPath(productoSerie, overallMax));
+        model.addAttribute("productoSeriePoints", buildSeriesPoints(productoSerie, overallMax));
 
         return "estadisticas/estadisticas";
+    }
+
+    private int normalizePositiveOrDefault(int value, int defaultValue) {
+        return value > 0 ? value : defaultValue;
+    }
+
+    private List<Map<String, Object>> buildSeriesPoints(List<VentaMensual> ventasMensuales, double maxTotal) {
+        List<Map<String, Object>> points = new ArrayList<>();
+        if (ventasMensuales.isEmpty()) {
+            return points;
+        }
+
+        for (int index = 0; index < ventasMensuales.size(); index++) {
+            VentaMensual ventaMensual = ventasMensuales.get(index);
+            double total = getTotalValue(ventaMensual);
+            double x = calculateSeriesX(index, ventasMensuales.size());
+            double y = calculateSeriesY(total, maxTotal);
+            Integer mesValue = ventaMensual.getMes();
+            Integer anoValue = ventaMensual.getAno();
+            String mesLabel = mesValue == null ? "00" : (mesValue < 10 ? "0" + mesValue : String.valueOf(mesValue));
+            String anoLabel = anoValue == null ? "0" : String.valueOf(anoValue);
+
+            Map<String, Object> point = new LinkedHashMap<>();
+            point.put("x", x);
+            point.put("y", y);
+            point.put("label", mesLabel + "/" + anoLabel);
+            point.put("total", total);
+            points.add(point);
+        }
+
+        return points;
+    }
+
+    private List<Map<String, Object>> buildYAxisTicks(double maxTotal) {
+        List<Map<String, Object>> ticks = new ArrayList<>();
+        double chartTop = 24.0;
+        double chartBottom = 252.0;
+        double chartHeight = chartBottom - chartTop;
+        double[] percentages = { 1.0, 0.75, 0.5, 0.25, 0.0 };
+
+        for (double percentage : percentages) {
+            double value = maxTotal * percentage;
+            double y = chartTop + (chartHeight * (1.0 - percentage));
+
+            Map<String, Object> tick = new LinkedHashMap<>();
+            tick.put("y", y);
+            tick.put("label", String.format(Locale.US, "S/. %.2f", value));
+            ticks.add(tick);
+        }
+
+        return ticks;
+    }
+
+    private String buildSeriesPath(List<VentaMensual> ventasMensuales, double maxTotal) {
+        if (ventasMensuales.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder path = new StringBuilder();
+        for (int index = 0; index < ventasMensuales.size(); index++) {
+            VentaMensual ventaMensual = ventasMensuales.get(index);
+            double total = getTotalValue(ventaMensual);
+            double x = calculateSeriesX(index, ventasMensuales.size());
+            double y = calculateSeriesY(total, maxTotal);
+
+            if (index == 0) {
+                path.append(String.format(Locale.US, "M %.2f %.2f", x, y));
+            } else {
+                path.append(String.format(Locale.US, " L %.2f %.2f", x, y));
+            }
+        }
+        return path.toString();
+    }
+
+    private String buildSeriesAreaPath(List<VentaMensual> ventasMensuales, double maxTotal) {
+        if (ventasMensuales.isEmpty()) {
+            return "";
+        }
+
+        double chartBottom = 300.0 - 48.0;
+        StringBuilder areaPath = new StringBuilder();
+        double startX = calculateSeriesX(0, ventasMensuales.size());
+        double startY = calculateSeriesY(getTotalValue(ventasMensuales.get(0)), maxTotal);
+        areaPath.append(String.format(Locale.US, "M %.2f %.2f", startX, chartBottom));
+        areaPath.append(String.format(Locale.US, " L %.2f %.2f", startX, startY));
+
+        for (int index = 1; index < ventasMensuales.size(); index++) {
+            VentaMensual ventaMensual = ventasMensuales.get(index);
+            double total = getTotalValue(ventaMensual);
+            double x = calculateSeriesX(index, ventasMensuales.size());
+            double y = calculateSeriesY(total, maxTotal);
+            areaPath.append(String.format(Locale.US, " L %.2f %.2f", x, y));
+        }
+
+        double endX = calculateSeriesX(ventasMensuales.size() - 1, ventasMensuales.size());
+        areaPath.append(String.format(Locale.US, " L %.2f %.2f Z", endX, chartBottom));
+        return areaPath.toString();
+    }
+
+    private double calculateSeriesX(int index, int totalPoints) {
+        double chartLeft = 56.0;
+        double chartRight = 24.0;
+        double chartWidth = 720.0 - chartLeft - chartRight;
+        if (totalPoints <= 1) {
+            return chartLeft + (chartWidth / 2.0);
+        }
+        return chartLeft + (chartWidth * index / (double) (totalPoints - 1));
+    }
+
+    private double calculateSeriesY(double total, double maxTotal) {
+        double chartTop = 24.0;
+        double chartBottom = 48.0;
+        double chartHeight = 300.0 - chartTop - chartBottom;
+        return chartTop + ((maxTotal - total) / maxTotal) * chartHeight;
+    }
+
+    private double getTotalValue(VentaMensual ventaMensual) {
+        Double totalValue = ventaMensual.getTotal();
+        if (totalValue == null) {
+            return 0.0;
+        }
+        return totalValue;
+    }
+
+    private double computeOverallMax(List<VentaMensual>... lists) {
+        double max = 0.0;
+        for (List<VentaMensual> list : lists) {
+            if (list == null) continue;
+            for (VentaMensual v : list) {
+                double val = getTotalValue(v);
+                if (val > max) max = val;
+            }
+        }
+        return max;
     }
 }
