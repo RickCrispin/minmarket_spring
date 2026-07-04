@@ -58,8 +58,8 @@ public class VentaController {
     public String historial(Model model, HttpSession session) {
     List<Venta> ventas = ventaService.getAllVentas();
     List<Venta> ventasConDetalles = new java.util.ArrayList<>();
-        for (com.example.demo.model.Venta v : ventas) {
-            com.example.demo.model.Venta full = ventaService.getVentaConDetalles(v.getId());
+        for (Venta v : ventas) {
+            Venta full = ventaService.getVentaConDetalles(v.getId());
             ventasConDetalles.add(full != null ? full : v);
         }
         model.addAttribute("ventas", ventasConDetalles);
