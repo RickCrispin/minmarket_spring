@@ -18,7 +18,7 @@
                 <a href="${pageContext.request.contextPath}/ventas/historial" class="${activePage == 'gestor-historial' ? 'active' : ''}">Historial de ventas</a>
             </div>
         </details>
-        <a href="${pageContext.request.contextPath}/estadisticas" class="${activePage == 'estadisticas' ? 'active' : ''}">Estadísticas</a>
+        <a href="${pageContext.request.contextPath}/estadisticas" class="${activePage == 'estadisticas' ? 'active' : ''}">Métricas</a>
         <a href="${pageContext.request.contextPath}/publicidad" class="${activePage == 'publicidad' ? 'active' : ''}">Publicidad</a>
         <a href="${pageContext.request.contextPath}/contacto" class="${activePage == 'contacto' ? 'active' : ''}">Contacto</a>
         <a href="${pageContext.request.contextPath}/logout" class="logout">Salir</a>
