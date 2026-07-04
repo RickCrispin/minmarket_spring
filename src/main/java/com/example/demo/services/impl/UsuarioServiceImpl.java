@@ -8,7 +8,6 @@ import com.example.demo.model.Usuario;
 import com.example.demo.repositories.UsuarioDAO;
 import com.example.demo.services.UsuarioService;
 
-import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {

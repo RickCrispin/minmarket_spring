@@ -25,27 +25,32 @@ public class CategoriaRepository implements CategoriaDAO {
         return categoria;
     };
 
+    @Override
     public List<Categoria> getAllCategorias() {
         String sql = "SELECT * FROM categorias";
         return jdbcTemplate.query(sql, rowMapper);
     }
 
+    @Override
     public Categoria getCategoriaById(int id) {
         String sql = "SELECT * FROM categorias WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
+    @Override
     public void addCategoria(Categoria categoria) {
         String sql = "INSERT INTO categorias (nombre_categoria, descripcion, estado) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, categoria.getNombre(), categoria.getDescripcion(), categoria.getEstado());
     }
 
+    @Override
     public void updateCategoria(Categoria categoria) {
         String sql = "UPDATE categorias SET nombre_categoria = ?, descripcion = ?, estado = ? WHERE id = ?";
         jdbcTemplate.update(sql, categoria.getNombre(), categoria.getDescripcion(), categoria.getEstado(), categoria.getId());
         syncProductsEstadoByCategory(categoria.getId(), categoria.getEstado());
     }
 
+    @Override
     public void desactivarCategoria(int id) {
         String sql = "UPDATE categorias SET estado = 'Inactivo' WHERE id = ?";
         jdbcTemplate.update(sql, id);

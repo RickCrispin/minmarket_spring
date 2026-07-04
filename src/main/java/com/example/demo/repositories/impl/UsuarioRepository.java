@@ -31,32 +31,38 @@ public class UsuarioRepository implements UsuarioDAO{
         return usuario;
     };
 
+    @Override
     public Usuario authUsuario(String user, String password) {
         String sql = "SELECT * FROM usuarios WHERE correo = ? AND password = ? AND estado = 'Activo'";
         List<Usuario> usuarios = jdbcTemplate.query(sql, rowMapper, user, password);
         return usuarios.isEmpty() ? null : usuarios.get(0);
     }
 
+    @Override
         public List<Usuario> getAllUsuarios(Integer userId) {
         String sql = "SELECT * FROM usuarios WHERE id != ? ORDER BY id DESC";
         return jdbcTemplate.query(sql, rowMapper, userId);
     }
 
+    @Override
     public Usuario getUsuarioById(int id) {
         String sql = "SELECT * FROM usuarios WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, rowMapper, id);
     }
 
+    @Override
     public void addUsuario(Usuario usuario) {
         String sql = "INSERT INTO usuarios (nombres, apellidos, correo, password, telefono, direccion, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, usuario.getNombres(), usuario.getApellidos(), usuario.getCorreo(), usuario.getPassword(), usuario.getTelefono(), usuario.getDireccion(), usuario.getEstado());
     }
 
+    @Override
     public void updateUsuario(Usuario usuario) {
         String sql = "UPDATE usuarios SET nombres = ?, apellidos = ?, correo = ?, password = ?, telefono = ?, direccion = ?, estado = ? WHERE id = ?";
         jdbcTemplate.update(sql, usuario.getNombres(), usuario.getApellidos(), usuario.getCorreo(), usuario.getPassword(), usuario.getTelefono(), usuario.getDireccion(), usuario.getEstado(), usuario.getId());
     }
 
+    @Override
     public void desactivarUsuario(int id) {
         String sql = "UPDATE usuarios SET estado = 'Inactivo' WHERE id = ?";
         jdbcTemplate.update(sql, id);
