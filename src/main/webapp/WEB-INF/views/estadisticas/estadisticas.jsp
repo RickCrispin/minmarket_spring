@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <fmt:setLocale value="es_PE"/>
 <jsp:include page="/WEB-INF/views/components/navbara.jsp" />
 
@@ -184,7 +185,18 @@
                             <c:forEach var="point" items="${categoriaSeriePoints}">
                                 <g>
                                     <circle class="time-series-dot" cx="${point.x}" cy="${point.y}" r="5"/>
-                                    <text class="time-series-point-label" x="${point.x}" y="272">${point.label}</text>
+                                    <text class="time-series-point-label" x="${point.x}" y="268">${point.label}</text>
+                                    <text class="time-series-point-sublabel" x="${point.x}" y="288">
+                                            <c:choose>
+                                                <c:when test="${not empty point.category}">
+                                                    <c:choose>
+                                                        <c:when test="${fn:length(point.category) gt 16}">${fn:substring(point.category, 0, 16)}...</c:when>
+                                                        <c:otherwise>${point.category}</c:otherwise>
+                                                    </c:choose>
+                                                </c:when>
+                                                <c:otherwise></c:otherwise>
+                                            </c:choose>
+                                    </text>
                                 </g>
                             </c:forEach>
                         </svg>

@@ -1,17 +1,19 @@
 package com.example.demo.repositories;
 
 import java.util.List;
+
 import com.example.demo.model.ProductoVendido;
 import com.example.demo.model.VentaMensual;
 
 public interface EstadisticaDAO {
     List<ProductoVendido> getTopProductosVendidos(int limit);
-    List<VentaMensual> getVentasMensuales(int monthsBack); // last N months
-    java.util.List<com.example.demo.model.DiaVenta> getVentasPorDiaSemana(int monthsBack);
-    java.util.List<com.example.demo.model.TicketPromedioMensual> getTicketPromedioMensual(int monthsBack);
-    java.util.List<com.example.demo.model.CategoriaIngresos> getTopCategoriasPorIngresos(int monthsBack, int limit);
-    java.util.List<ProductoVendido> getProductosMenosVendidos(int limit);
-    java.util.List<VentaMensual> getVentasPromedioDiarioMensual(int monthsBack);
-    java.util.List<VentaMensual> getVentasMensualesPorCategoria(int monthsBack, int categoriaId);
-    java.util.List<VentaMensual> getCantidadMensualPorProducto(int monthsBack, int productoId);
+    List<VentaMensual> getVentasMensuales(int monthsBack); // últimos N meses
+    List<com.example.demo.model.DiaVenta> getVentasPorDiaSemana(int monthsBack);
+    List<com.example.demo.model.TicketPromedioMensual> getTicketPromedioMensual(int monthsBack);
+    List<com.example.demo.model.CategoriaIngresos> getTopCategoriasPorIngresos(int monthsBack, int limit);
+    List<ProductoVendido> getProductosMenosVendidos(int limit);
+    List<VentaMensual> getVentasPromedioDiarioMensual(int monthsBack);
+    List<VentaMensual> getVentasMensualesPorCategoria(int monthsBack, int categoriaId);
+    List<VentaMensual> getCantidadMensualPorProducto(int monthsBack, int productoId);
+    List<com.example.demo.model.CategoriaMes> getTopCategoriaPorMes(int monthsBack);
 }

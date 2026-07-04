@@ -1,12 +1,14 @@
 package com.example.demo.controllers;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.model.Usuario;
 import com.example.demo.model.Venta;
@@ -54,9 +56,8 @@ public class VentaController {
 
     @GetMapping("/ventas/historial")
     public String historial(Model model, HttpSession session) {
-        java.util.List<com.example.demo.model.Venta> ventas = ventaService.getAllVentas();
-        // cargar detalles para cada venta
-        java.util.List<com.example.demo.model.Venta> ventasConDetalles = new java.util.ArrayList<>();
+    List<Venta> ventas = ventaService.getAllVentas();
+    List<Venta> ventasConDetalles = new java.util.ArrayList<>();
         for (com.example.demo.model.Venta v : ventas) {
             com.example.demo.model.Venta full = ventaService.getVentaConDetalles(v.getId());
             ventasConDetalles.add(full != null ? full : v);

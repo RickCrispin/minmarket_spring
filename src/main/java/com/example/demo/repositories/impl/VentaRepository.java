@@ -56,7 +56,7 @@ public class VentaRepository implements VentaDAO {
     }
 
     @Override
-    public java.util.List<Venta> getAllVentas() {
+    public List<Venta> getAllVentas() {
         String sql = "SELECT * FROM ventas ORDER BY id DESC";
         return jdbcTemplate.query(sql, rowMapper);
     }

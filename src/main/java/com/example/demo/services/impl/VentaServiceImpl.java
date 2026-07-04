@@ -1,9 +1,9 @@
 package com.example.demo.services.impl;
 
 import java.util.List;
-import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.DetalleVenta;
 import com.example.demo.model.Producto;
@@ -140,7 +140,7 @@ public class VentaServiceImpl implements VentaService {
     }
 
     @Override
-    public java.util.List<Venta> getAllVentas() {
+    public List<Venta> getAllVentas() {
         return ventaDAO.getAllVentas();
     }
 }

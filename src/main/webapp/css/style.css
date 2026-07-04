@@ -656,10 +656,26 @@ h3 {
 
 .time-series-point-label {
     fill: #475569;
-    font-size: 0.72rem;
+    font-family: "Nunito Sans", Arial, sans-serif;
+    fill: #475569;
+    font-size: 0.82rem;
     font-weight: 700;
     text-anchor: middle;
+    letter-spacing: 0.02em;
 }
+
+.time-series-point-sublabel {
+    font-family: "Nunito Sans", Arial, sans-serif;
+    fill: #0f172a;
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-anchor: middle;
+    pointer-events: none;
+    dominant-baseline: hanging;
+}
+
+/* Prevent chart labels from overflowing the card */
+.time-series-chart { overflow: hidden; }
 
 .time-series-area {
     fill: url(#ventasAreaGradient);

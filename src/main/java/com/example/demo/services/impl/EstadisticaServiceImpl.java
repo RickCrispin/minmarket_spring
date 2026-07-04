@@ -29,37 +29,42 @@ public class EstadisticaServiceImpl implements EstadisticaService {
     }
 
     @Override
-    public java.util.List<com.example.demo.model.DiaVenta> getVentasPorDiaSemana(int monthsBack) {
+    public List<com.example.demo.model.DiaVenta> getVentasPorDiaSemana(int monthsBack) {
         return estadisticaDAO.getVentasPorDiaSemana(monthsBack);
     }
 
     @Override
-    public java.util.List<com.example.demo.model.TicketPromedioMensual> getTicketPromedioMensual(int monthsBack) {
+    public List<com.example.demo.model.TicketPromedioMensual> getTicketPromedioMensual(int monthsBack) {
         return estadisticaDAO.getTicketPromedioMensual(monthsBack);
     }
 
     @Override
-    public java.util.List<com.example.demo.model.CategoriaIngresos> getTopCategoriasPorIngresos(int monthsBack, int limit) {
+    public List<com.example.demo.model.CategoriaIngresos> getTopCategoriasPorIngresos(int monthsBack, int limit) {
         return estadisticaDAO.getTopCategoriasPorIngresos(monthsBack, limit);
     }
 
     @Override
-    public java.util.List<ProductoVendido> getProductosMenosVendidos(int limit) {
+    public List<ProductoVendido> getProductosMenosVendidos(int limit) {
         return estadisticaDAO.getProductosMenosVendidos(limit);
     }
 
     @Override
-    public java.util.List<VentaMensual> getVentasPromedioDiarioMensual(int monthsBack) {
+    public List<VentaMensual> getVentasPromedioDiarioMensual(int monthsBack) {
         return estadisticaDAO.getVentasPromedioDiarioMensual(monthsBack);
     }
 
     @Override
-    public java.util.List<VentaMensual> getVentasMensualesPorCategoria(int monthsBack, int categoriaId) {
+    public List<VentaMensual> getVentasMensualesPorCategoria(int monthsBack, int categoriaId) {
         return estadisticaDAO.getVentasMensualesPorCategoria(monthsBack, categoriaId);
     }
 
     @Override
-    public java.util.List<VentaMensual> getCantidadMensualPorProducto(int monthsBack, int productoId) {
+    public List<VentaMensual> getCantidadMensualPorProducto(int monthsBack, int productoId) {
         return estadisticaDAO.getCantidadMensualPorProducto(monthsBack, productoId);
+    }
+
+    @Override
+    public List<com.example.demo.model.CategoriaMes> getTopCategoriaPorMes(int monthsBack) {
+        return estadisticaDAO.getTopCategoriaPorMes(monthsBack);
     }
 }

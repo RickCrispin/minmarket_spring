@@ -3,7 +3,6 @@ package com.example.demo.repositories.impl;
 
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.jms.JmsProperties.Listener.Session;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.model.Usuario;
 import com.example.demo.repositories.UsuarioDAO;
 
-import jakarta.servlet.http.HttpSession;
 
 @Repository
 public class UsuarioRepository implements UsuarioDAO{

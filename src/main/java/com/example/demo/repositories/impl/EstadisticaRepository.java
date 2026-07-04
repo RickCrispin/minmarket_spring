@@ -2,18 +2,21 @@ package com.example.demo.repositories.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.model.ProductoVendido;
-import com.example.demo.model.VentaMensual;
-import com.example.demo.model.DiaVenta;
-import com.example.demo.model.TicketPromedioMensual;
 import com.example.demo.model.CategoriaIngresos;
+import com.example.demo.model.CategoriaMes;
+import com.example.demo.model.DiaVenta;
+import com.example.demo.model.ProductoVendido;
+import com.example.demo.model.TicketPromedioMensual;
+import com.example.demo.model.VentaMensual;
 import com.example.demo.repositories.EstadisticaDAO;
+
 
 @Repository
 public class EstadisticaRepository implements EstadisticaDAO {
@@ -29,9 +32,16 @@ public class EstadisticaRepository implements EstadisticaDAO {
     private final RowMapper<TicketPromedioMensual> ticketPromedioRowMapper = (rs, rowNum) -> mapTicketPromedio(rs);
     private final RowMapper<CategoriaIngresos> categoriaIngresosRowMapper = (rs, rowNum) -> mapCategoriaIngresos(rs);
     private final RowMapper<VentaMensual> ventaMensualGenericRowMapper = (rs, rowNum) -> mapVentaMensual(rs);
+    private final RowMapper<CategoriaMes> categoriaMesRowMapper = (rs, rowNum) -> {
+        CategoriaMes cm = new CategoriaMes();
+        cm.setAno(rs.getInt("ano"));
+        cm.setMes(rs.getInt("mes"));
+        cm.setNombreCategoria(rs.getString("categoria"));
+        return cm;
+    };
 
     @Override
-    public java.util.List<ProductoVendido> getTopProductosVendidos(int limit) {
+    public List<ProductoVendido> getTopProductosVendidos(int limit) {
         String sql = "SELECT p.id AS id_producto, p.nombre_producto AS nombre, SUM(d.cantidad) AS total_cantidad, SUM(d.subtotal) AS total_ingresos "
                 + "FROM detalle_venta d "
                 + "JOIN productos p ON d.id_producto = p.id "
@@ -44,7 +54,7 @@ public class EstadisticaRepository implements EstadisticaDAO {
     }
 
     @Override
-    public java.util.List<VentaMensual> getVentasMensuales(int monthsBack) {
+    public List<VentaMensual> getVentasMensuales(int monthsBack) {
         String sql = "SELECT YEAR(v.fecha_venta) AS ano, MONTH(v.fecha_venta) AS mes, SUM(v.total) AS total "
                 + "FROM ventas v "
                 + "WHERE v.estado = 'Concretado' AND v.fecha_venta >= DATE_SUB(CURDATE(), INTERVAL ? MONTH) "
@@ -54,7 +64,7 @@ public class EstadisticaRepository implements EstadisticaDAO {
     }
 
     @Override
-    public java.util.List<DiaVenta> getVentasPorDiaSemana(int monthsBack) {
+    public List<DiaVenta> getVentasPorDiaSemana(int monthsBack) {
         String sql = "SELECT DAYNAME(v.fecha_venta) AS dia_nombre, SUM(v.total) AS total "
                 + "FROM ventas v "
                 + "WHERE v.estado = 'Concretado' AND v.fecha_venta >= DATE_SUB(CURDATE(), INTERVAL ? MONTH) "
@@ -64,7 +74,7 @@ public class EstadisticaRepository implements EstadisticaDAO {
     }
 
     @Override
-    public java.util.List<TicketPromedioMensual> getTicketPromedioMensual(int monthsBack) {
+    public List<TicketPromedioMensual> getTicketPromedioMensual(int monthsBack) {
         String sql = "SELECT YEAR(v.fecha_venta) AS ano, MONTH(v.fecha_venta) AS mes, AVG(v.total) AS promedio "
                 + "FROM ventas v "
                 + "WHERE v.estado = 'Concretado' AND v.fecha_venta >= DATE_SUB(CURDATE(), INTERVAL ? MONTH) "
@@ -74,7 +84,7 @@ public class EstadisticaRepository implements EstadisticaDAO {
     }
 
     @Override
-    public java.util.List<CategoriaIngresos> getTopCategoriasPorIngresos(int monthsBack, int limit) {
+    public List<CategoriaIngresos> getTopCategoriasPorIngresos(int monthsBack, int limit) {
         String sql = "SELECT c.id AS id_categoria, c.nombre_categoria AS categoria, SUM(d.subtotal) AS total_ingresos "
                 + "FROM detalle_venta d "
                 + "JOIN productos p ON d.id_producto = p.id "
@@ -88,7 +98,7 @@ public class EstadisticaRepository implements EstadisticaDAO {
     }
 
     @Override
-    public java.util.List<ProductoVendido> getProductosMenosVendidos(int limit) {
+    public List<ProductoVendido> getProductosMenosVendidos(int limit) {
         String sql = "SELECT p.id AS id_producto, p.nombre_producto AS nombre, SUM(d.cantidad) AS total_cantidad, SUM(d.subtotal) AS total_ingresos "
                 + "FROM detalle_venta d "
                 + "JOIN productos p ON d.id_producto = p.id "
@@ -101,7 +111,7 @@ public class EstadisticaRepository implements EstadisticaDAO {
     }
 
     @Override
-    public java.util.List<VentaMensual> getVentasPromedioDiarioMensual(int monthsBack) {
+    public List<VentaMensual> getVentasPromedioDiarioMensual(int monthsBack) {
         String sql = "SELECT YEAR(v.fecha_venta) AS ano, MONTH(v.fecha_venta) AS mes, SUM(v.total) / COUNT(DISTINCT DATE(v.fecha_venta)) AS total "
                 + "FROM ventas v "
                 + "WHERE v.estado = 'Concretado' AND v.fecha_venta >= DATE_SUB(CURDATE(), INTERVAL ? MONTH) "
@@ -111,7 +121,7 @@ public class EstadisticaRepository implements EstadisticaDAO {
     }
 
     @Override
-    public java.util.List<VentaMensual> getVentasMensualesPorCategoria(int monthsBack, int categoriaId) {
+    public List<VentaMensual> getVentasMensualesPorCategoria(int monthsBack, int categoriaId) {
         String sql = "SELECT YEAR(v.fecha_venta) AS ano, MONTH(v.fecha_venta) AS mes, SUM(d.subtotal) AS total "
                 + "FROM detalle_venta d "
                 + "JOIN productos p ON d.id_producto = p.id "
@@ -124,7 +134,22 @@ public class EstadisticaRepository implements EstadisticaDAO {
     }
 
     @Override
-    public java.util.List<VentaMensual> getCantidadMensualPorProducto(int monthsBack, int productoId) {
+    public List<com.example.demo.model.CategoriaMes> getTopCategoriaPorMes(int monthsBack) {
+        String sql = "SELECT ano, mes, categoria FROM ("
+                + " SELECT YEAR(v.fecha_venta) AS ano, MONTH(v.fecha_venta) AS mes, c.nombre_categoria AS categoria, SUM(d.subtotal) AS total_ingresos, "
+                + " ROW_NUMBER() OVER (PARTITION BY YEAR(v.fecha_venta), MONTH(v.fecha_venta) ORDER BY SUM(d.subtotal) DESC) rn "
+                + " FROM detalle_venta d "
+                + " JOIN productos p ON d.id_producto = p.id "
+                + " JOIN categorias c ON p.id_categoria = c.id "
+                + " JOIN ventas v ON d.id_venta = v.id "
+                + " WHERE v.estado = 'Concretado' AND v.fecha_venta >= DATE_SUB(CURDATE(), INTERVAL ? MONTH) "
+                + " GROUP BY YEAR(v.fecha_venta), MONTH(v.fecha_venta), c.id, c.nombre_categoria "
+                + " ) t WHERE rn = 1 ORDER BY ano, mes";
+        return jdbcTemplate.query(sql, Objects.requireNonNull(categoriaMesRowMapper), monthsBack);
+    }
+
+    @Override
+    public List<VentaMensual> getCantidadMensualPorProducto(int monthsBack, int productoId) {
         String sql = "SELECT YEAR(v.fecha_venta) AS ano, MONTH(v.fecha_venta) AS mes, SUM(d.cantidad) AS total "
                 + "FROM detalle_venta d "
                 + "JOIN ventas v ON d.id_venta = v.id "

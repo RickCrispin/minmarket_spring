@@ -11,10 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.model.ProductoVendido;
-import com.example.demo.model.VentaMensual;
-import com.example.demo.model.TicketPromedioMensual;
 import com.example.demo.model.CategoriaIngresos;
+import com.example.demo.model.CategoriaMes;
+import com.example.demo.model.DiaVenta;
+import com.example.demo.model.ProductoVendido;
+import com.example.demo.model.TicketPromedioMensual;
+import com.example.demo.model.VentaMensual;
 import com.example.demo.services.EstadisticaService;
 
 @Controller
@@ -36,14 +38,14 @@ public class EstadisticaController {
 
         List<ProductoVendido> topProductos = estadisticaService.getTopProductosVendidos(safeTop);
         List<VentaMensual> ventasMensuales = estadisticaService.getVentasMensuales(safeMonths);
-        java.util.List<com.example.demo.model.DiaVenta> ventasPorDia = estadisticaService.getVentasPorDiaSemana(safeMonths);
-        java.util.List<TicketPromedioMensual> ticketPromedio = estadisticaService.getTicketPromedioMensual(safeMonths);
-        java.util.List<CategoriaIngresos> topCategorias = estadisticaService.getTopCategoriasPorIngresos(safeMonths, safeTop);
-        java.util.List<ProductoVendido> productosMenosVendidos = estadisticaService.getProductosMenosVendidos(safeTop);
-        java.util.List<VentaMensual> promedioDiarioMensual = estadisticaService.getVentasPromedioDiarioMensual(safeMonths);
+        List<DiaVenta> ventasPorDia = estadisticaService.getVentasPorDiaSemana(safeMonths);
+        List<TicketPromedioMensual> ticketPromedio = estadisticaService.getTicketPromedioMensual(safeMonths);
+        List<CategoriaIngresos> topCategorias = estadisticaService.getTopCategoriasPorIngresos(safeMonths, safeTop);
+        List<ProductoVendido> productosMenosVendidos = estadisticaService.getProductosMenosVendidos(safeTop);
+        List<VentaMensual> promedioDiarioMensual = estadisticaService.getVentasPromedioDiarioMensual(safeMonths);
 
-        // map ticket promedio into VentaMensual for chart helpers
-        java.util.List<VentaMensual> ticketPromedioAsVenta = new java.util.ArrayList<>();
+        // mapear el ticket promedio en VentaMensual
+        List<VentaMensual> ticketPromedioAsVenta = new ArrayList<>();
         for (TicketPromedioMensual t : ticketPromedio) {
             VentaMensual v = new VentaMensual();
             v.setAno(t.getAno());
@@ -52,16 +54,17 @@ public class EstadisticaController {
             ticketPromedioAsVenta.add(v);
         }
 
-        // series for top category (monthly ingresos) and worst product (monthly cantidad)
-        java.util.List<VentaMensual> categoriaSerie = new java.util.ArrayList<>();
+        // Serie de tiempo para categoria (ingresos mensuales)
+        List<VentaMensual> categoriaSerie = new ArrayList<>();
         if (!topCategorias.isEmpty()) {
             Integer idCat = topCategorias.get(0).getIdCategoria();
             if (idCat != null) {
                 categoriaSerie = estadisticaService.getVentasMensualesPorCategoria(safeMonths, idCat);
             }
         }
-
-        java.util.List<VentaMensual> productoSerie = new java.util.ArrayList<>();
+        // Obtener un top de categorais por mes
+        List<CategoriaMes> topCategoriaPorMes = estadisticaService.getTopCategoriaPorMes(safeMonths);
+        List<VentaMensual> productoSerie = new ArrayList<>();
         if (!productosMenosVendidos.isEmpty()) {
             Integer idProd = productosMenosVendidos.get(0).getIdProducto();
             if (idProd != null) {
@@ -69,7 +72,7 @@ public class EstadisticaController {
             }
         }
 
-        // compute common max across all series to keep same Y scale
+  
         double overallMax = computeOverallMax(ventasMensuales, promedioDiarioMensual, ticketPromedioAsVenta, categoriaSerie, productoSerie);
         if (overallMax <= 0.0) overallMax = 1.0;
 
@@ -98,7 +101,7 @@ public class EstadisticaController {
         model.addAttribute("topCategoriasIngresos", topCategorias);
         model.addAttribute("productosMenosVendidos", productosMenosVendidos);
 
-        // expose series for charts (paths, areas, points)
+        // Agregar series de tiempo para las otras métricas
         model.addAttribute("promedioDiarioSeriePath", buildSeriesPath(promedioDiarioMensual, overallMax));
         model.addAttribute("promedioDiarioSerieAreaPath", buildSeriesAreaPath(promedioDiarioMensual, overallMax));
         model.addAttribute("promedioDiarioSeriePoints", buildSeriesPoints(promedioDiarioMensual, overallMax));
@@ -109,7 +112,7 @@ public class EstadisticaController {
 
         model.addAttribute("categoriaSeriePath", buildSeriesPath(categoriaSerie, overallMax));
         model.addAttribute("categoriaSerieAreaPath", buildSeriesAreaPath(categoriaSerie, overallMax));
-        model.addAttribute("categoriaSeriePoints", buildSeriesPoints(categoriaSerie, overallMax));
+        model.addAttribute("categoriaSeriePoints", buildSeriesPointsWithCategory(categoriaSerie, overallMax, topCategoriaPorMes));
 
         model.addAttribute("productoSeriePath", buildSeriesPath(productoSerie, overallMax));
         model.addAttribute("productoSerieAreaPath", buildSeriesAreaPath(productoSerie, overallMax));
@@ -143,6 +146,45 @@ public class EstadisticaController {
             point.put("y", y);
             point.put("label", mesLabel + "/" + anoLabel);
             point.put("total", total);
+            points.add(point);
+        }
+
+        return points;
+    }
+
+    private List<Map<String, Object>> buildSeriesPointsWithCategory(List<VentaMensual> ventasMensuales, double maxTotal, List<CategoriaMes> categoriasPorMes) {
+        List<Map<String, Object>> points = new ArrayList<>();
+        if (ventasMensuales.isEmpty()) {
+            return points;
+        }
+
+        for (int index = 0; index < ventasMensuales.size(); index++) {
+            VentaMensual ventaMensual = ventasMensuales.get(index);
+            double total = getTotalValue(ventaMensual);
+            double x = calculateSeriesX(index, ventasMensuales.size());
+            double y = calculateSeriesY(total, maxTotal);
+            Integer mesValue = ventaMensual.getMes();
+            Integer anoValue = ventaMensual.getAno();
+            String mesLabel = mesValue == null ? "00" : (mesValue < 10 ? "0" + mesValue : String.valueOf(mesValue));
+            String anoLabel = anoValue == null ? "0" : String.valueOf(anoValue);
+
+            Map<String, Object> point = new LinkedHashMap<>();
+            point.put("x", x);
+            point.put("y", y);
+            point.put("label", mesLabel + "/" + anoLabel);
+            point.put("total", total);
+
+            // Nombre de categoria por mes
+            String catName = null;
+            if (categoriasPorMes != null && !categoriasPorMes.isEmpty()) {
+                for (CategoriaMes cm : categoriasPorMes) {
+                    if (cm.getAno() != null && cm.getMes() != null && cm.getAno().equals(anoValue) && cm.getMes().equals(mesValue)) {
+                        catName = cm.getNombreCategoria();
+                        break;
+                    }
+                }
+            }
+            point.put("category", catName == null ? "" : catName);
             points.add(point);
         }
 
@@ -240,6 +282,9 @@ public class EstadisticaController {
         return totalValue;
     }
 
+    // Calcular el valor máximo entre varias listas de VentaMensual
+    // SafeVarargs sirve para indicar que el método acepta un número variable de argumentos de tipo List<VentaMensual>
+    @SafeVarargs
     private double computeOverallMax(List<VentaMensual>... lists) {
         double max = 0.0;
         for (List<VentaMensual> list : lists) {
