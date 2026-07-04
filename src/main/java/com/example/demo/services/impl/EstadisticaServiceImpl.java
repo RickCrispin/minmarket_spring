@@ -4,7 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.CategoriaIngresos;
+import com.example.demo.model.CategoriaMes;
+import com.example.demo.model.DiaVenta;
 import com.example.demo.model.ProductoVendido;
+import com.example.demo.model.TicketPromedioMensual;
 import com.example.demo.model.VentaMensual;
 import com.example.demo.repositories.EstadisticaDAO;
 import com.example.demo.services.EstadisticaService;
@@ -29,17 +33,17 @@ public class EstadisticaServiceImpl implements EstadisticaService {
     }
 
     @Override
-    public List<com.example.demo.model.DiaVenta> getVentasPorDiaSemana(int monthsBack) {
+    public List<DiaVenta> getVentasPorDiaSemana(int monthsBack) {
         return estadisticaDAO.getVentasPorDiaSemana(monthsBack);
     }
 
     @Override
-    public List<com.example.demo.model.TicketPromedioMensual> getTicketPromedioMensual(int monthsBack) {
+    public List<TicketPromedioMensual> getTicketPromedioMensual(int monthsBack) {
         return estadisticaDAO.getTicketPromedioMensual(monthsBack);
     }
 
     @Override
-    public List<com.example.demo.model.CategoriaIngresos> getTopCategoriasPorIngresos(int monthsBack, int limit) {
+    public List<CategoriaIngresos> getTopCategoriasPorIngresos(int monthsBack, int limit) {
         return estadisticaDAO.getTopCategoriasPorIngresos(monthsBack, limit);
     }
 
@@ -64,7 +68,7 @@ public class EstadisticaServiceImpl implements EstadisticaService {
     }
 
     @Override
-    public List<com.example.demo.model.CategoriaMes> getTopCategoriaPorMes(int monthsBack) {
+    public List<CategoriaMes> getTopCategoriaPorMes(int monthsBack) {
         return estadisticaDAO.getTopCategoriaPorMes(monthsBack);
     }
 }
