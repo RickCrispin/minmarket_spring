@@ -3,6 +3,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 <header class="header">
     <h1>MiniMarket - <c:out value="${headerTitle}" default="Inicio"/></h1>
+    <c:if test="${not empty sessionScope.userLogged}">
+        <div class="user-info">Hola, <c:out value="${sessionScope.userLogged.nombres}"/> <c:out value="${sessionScope.userLogged.apellidos}"/></div>
+    </c:if>
     <nav>
         <a href="${pageContext.request.contextPath}/principal" class="${activePage == 'principal' ? 'active' : ''}">Inicio</a>
         <a href="${pageContext.request.contextPath}/ventas" class="${activePage == 'ventas' ? 'active' : ''}">Ventas</a>

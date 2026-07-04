@@ -43,10 +43,17 @@ public class CategoriaRepository implements CategoriaDAO {
     public void updateCategoria(Categoria categoria) {
         String sql = "UPDATE categorias SET nombre_categoria = ?, descripcion = ?, estado = ? WHERE id = ?";
         jdbcTemplate.update(sql, categoria.getNombre(), categoria.getDescripcion(), categoria.getEstado(), categoria.getId());
+        syncProductsEstadoByCategory(categoria.getId(), categoria.getEstado());
     }
 
     public void desactivarCategoria(int id) {
         String sql = "UPDATE categorias SET estado = 'Inactivo' WHERE id = ?";
         jdbcTemplate.update(sql, id);
+        syncProductsEstadoByCategory(id, "Inactivo");
+    }
+
+    private void syncProductsEstadoByCategory(int categoriaId, String estado) {
+        String sql = "UPDATE productos SET estado = ? WHERE id_categoria = ?";
+        jdbcTemplate.update(sql, estado, categoriaId);
     }
 }
